@@ -1,0 +1,28 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+{% block adminContent %}
+{% include 'admin_panel_templates/navbar.html' %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Create Bookshelf</h1>
+    </div>
+    <form method="post"  enctype="multipart/form-data" class="row d-flex justify-content-center align-items-center mt-5">
+        {% csrf_token %}
+        <div class="col-lg-8">
+            <div class="row mb-3">
+                <label for=""><strong>BookShelve Title</strong></label>
+                <input required type="text"  name="title">
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-lg-5">
+                    <button style="background-color: var(--orange) ; width:100%; color:white;font-family: Boldervan;font-size: 20px;letter-spacing: 2px;" type="submit" class="btn">Save Bookshelf</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}

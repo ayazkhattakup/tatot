@@ -1,0 +1,368 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+
+{% block adminContent %}
+{% load static %}
+{% include 'admin_panel_templates/navbar.html' %}
+
+
+<style>
+    .left {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        color: black;
+        border: none;
+        outline: none;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        transform: translate(0%, -50%);
+    }
+    .sp-videos-cover {
+        position: relative;
+        overflow-x: scroll;
+    }
+    .sp-videos-cover::-webkit-scrollbar {
+        display: none;
+    }
+    .right {
+        position: absolute;
+        top: 50%;
+        right: 0%;
+        color: black;
+        border: none;
+        outline: none;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Welcome back, {{request.user.username}}</h1>
+    </div>
+    <div class="row d-flex flex-row justify-content-center align-items-center mt-2">
+        <h3 style="width:fit-content; color:var(--orange);" id="current-time"></h3>
+    </div>
+    <div class="row d-flex justify-content-center mt-5 align-items-center">
+        <div style="width:fit-content;" class="messages-box d-flex flex-row align-items-end gap-3">
+            <div class="icon">
+                <i class="fa-solid fa-comment"></i>
+            </div>
+            <div class="text d-flex align-items-center justify-content-start flex-column">
+                <span class="digit">
+                    8
+                </span>
+                <span class="info-text">
+                    MESSAGES
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center mt-5 align-items-center">
+        <div class="col-lg-6 d-flex flex-row align-items-center justify-content-center gap-5">
+            <div class="books d-flex flex-row  align-items-center">
+                <div class="icon">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+                <div class="info-text d-flex flex-column">
+                    {{number_of_books}} BOOKS
+                </div>
+            </div>
+            <div class="videos d-flex flex-row align-items-center">
+                <div class="icon">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <div class="info-text flex-wrap d-flex flex-column">
+                    {{number_of_videos}} VIDEOS
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 d-flex flex-row justify-content-center">
+        <div class="col-lg-9 subs-stats p-3">
+            <div class="stat stat-1">
+                <div class="stat-head">
+                    {{today_subscribers}}
+                </div>
+                <div class="stat-body">
+                    <div class="b-text">
+                        TODAY
+                    </div>
+                    <div class="subs-text">
+                        NEW SUBSCRIBERS
+                    </div>
+                </div>
+            </div>
+            <div class="stat stat-1">
+                <div class="stat-head">
+                    {{this_week_subscribers}}
+                </div>
+                <div class="stat-body">
+                    <div class="b-text">
+                        THIS WEEK
+                    </div>
+                    <div class="subs-text">
+                        NEW SUBSCRIBERS
+                    </div>
+                </div>
+            </div>
+            <div class="stat stat-1">
+                <div class="stat-head">
+                    {{this_month_subscribers}}
+                </div>
+                <div class="stat-body">
+                    <div class="b-text">
+                        THIS MONTH
+                    </div>
+                    <div class="subs-text">
+                        NEW SUBSCRIBERS
+                    </div>
+                </div>
+            </div>
+            <div class="stat stat-1">
+                <div class="stat-head">
+                    {{this_year_subscribers}}
+                </div>
+                <div class="stat-body">
+                    <div class="b-text">
+                        THIS YEAR
+                    </div>
+                    <div class="subs-text">
+                        NEW SUBSCRIBERS
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5 mb-5 d-flex flex-column gap-5 justify-content-center align-items-center">
+        <div class="col-11 sp-stat d-flex flex-row gap-5 mt-5">
+            <div class="intro d-flex gap-3 flex-row align-items-center justify-content-center">
+                <div class="icon">
+                    <i class="fa-solid fa-video"></i>
+                </div>
+                <div class="stat-text">
+                    MOST-WATCHED <br> VIDEOS
+                </div>
+            </div>
+            <div class="sp-videos-cover">
+                <div class="sp-videos">
+                    <button class="left">
+                        <i class="fa-solid fa-circle-left"></i>
+                    </button>
+                    <button class="right">
+                        <i class="fa-solid fa-circle-right"></i>
+                    </button>
+                    {% for video in most_watched_videos %}
+                    <a href="{% url 'video-details' %}?id={{video.id}}" class="video-cover">
+                        <img class="video-cover" src="{{video.cover.url}}" alt="">
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-11 sp-stat d-flex flex-row gap-5 mt-3">
+            <div class="intro d-flex gap-3 flex-row align-items-center justify-content-center">
+                <div class="icon">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div class="stat-text">
+                    MOST-FAVORITED <br> VIDEOS
+                </div>
+            </div>
+            <div class="sp-videos-cover">                
+                <div class="sp-videos">
+                    <button class="left">
+                        <i class="fa-solid fa-circle-left"></i>
+                    </button>
+                    <button class="right">
+                        <i class="fa-solid fa-circle-right"></i>
+                    </button>
+                    {% for video in most_favorited_videos %}
+                    <a href="{% url 'video-details' %}?id={{video.id}}" class="video-cover">
+                        <img class="video-cover" src="{{video.cover.url}}" alt="">
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-11 sp-stat d-flex flex-row gap-5 mt-3">
+            <div class="intro d-flex gap-3 flex-row align-items-center justify-content-center">
+                <div class="icon">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+                <div class="stat-text" style="margin-right:4rem;">
+                    MOST-READ <br> BOOKS
+                </div>
+            </div>
+            <div class="sp-videos-cover">
+                <div class="sp-videos">
+                    <button class="left">
+                        <i class="fa-solid fa-circle-left"></i>
+                    </button>
+                    <button class="right">
+                        <i class="fa-solid fa-circle-right"></i>
+                    </button>
+                    {% for book in most_read_books %}
+                    <a href="{% url 'book-details' %}?id={{book.id}}" class="video-cover">
+                        <img class="video-cover" src="{{book.img.url}}" alt="">
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-11 sp-stat d-flex flex-row gap-5 mt-3">
+            <div class="intro d-flex gap-3 flex-row align-items-center justify-content-center">
+                <div class="icon">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div class="stat-text">
+                    MOST-FAVORITED <br> BOOKS
+                </div>
+            </div>
+            <div class="sp-videos-cover">
+                <div class="sp-videos">
+                    <button class="left">
+                        <i class="fa-solid fa-circle-left"></i>
+                    </button>
+                    <button class="right">
+                        <i class="fa-solid fa-circle-right"></i>
+                    </button>
+                    {% for book in most_favorited_books %}
+                    <a href="{% url 'book-details' %}?id={{book.id}}" class="video-cover">
+                        <img class="video-cover" src="{{book.img.url}}" alt="">
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-11 sp-stat d-flex flex-row gap-5 mt-3">
+            <div class="intro d-flex gap-3 flex-row align-items-center justify-content-center">
+                <div class="icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="stat-text" style="margin-right:4rem;">
+                    MOST-VISITED <br> COURSES
+                </div>
+            </div>
+            <div class="sp-videos-cover">
+                <div class="sp-videos">
+                    <button class="left">
+                        <i class="fa-solid fa-circle-left"></i>
+                    </button>
+                    <button class="right">
+                        <i class="fa-solid fa-circle-right"></i>
+                    </button>
+                    {% for course in most_visited_courses %}
+                    <a href="{% url 'course-details' %}?id={{course.id}}" class="video-cover">
+                        <img class="video-cover" src="{{course.cover.url}}" alt="">
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-11 sp-stat d-flex flex-row gap-5 mt-3">
+            <div class="intro d-flex gap-3 flex-row align-items-center justify-content-center">
+                <div class="icon">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div class="stat-text">
+                    MOST-FAVORITED <br> COURSES
+                </div>
+            </div>
+            <div class="sp-videos-cover">
+                <div class="sp-videos">
+                    <button class="left">
+                        <i class="fa-solid fa-circle-left"></i>
+                    </button>
+                    <button class="right">
+                        <i class="fa-solid fa-circle-right"></i>
+                    </button>
+                    {% for course in most_favorited_course %}
+                    <a href="{% url 'course-details' %}?id={{course.id}}" class="video-cover">
+                        <img class="video-cover" src="{{course.cover.url}}" alt="">
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="getting-current-time">
+    let timeCon = document.getElementById('current-time');
+
+    function updateTime() {
+        let dateTime = new Date();
+        let currentTime = dateTime.toISOString().slice(0, 19);
+        currentTime = currentTime.replace('T', ' ');
+        timeCon.innerText = currentTime;
+    }
+
+    updateTime();
+
+    setInterval(updateTime, 1000);
+</script>
+
+
+<script>
+
+    let leftSound = new Audio('{% static "sounds/left.wav" %}')
+    let rightSound = new Audio('{% static "sounds/right.wav" %}')
+
+
+    let leftBtns = document.querySelectorAll('.left');
+    let rightBtns = document.querySelectorAll('.right');
+    let sliderStep = 100;
+
+
+    leftBtns.forEach(leftBtn => {
+        let slider = leftBtn.parentElement;
+        leftBtn.addEventListener('click', () => {
+            smoothScrollTo(slider, slider.scrollLeft - sliderStep);
+        leftSound.volume = .1;
+        leftSound.play();
+    });
+    })
+
+    rightBtns.forEach(rightBtn => {
+        let slider = rightBtn.parentElement;
+        rightBtn.addEventListener('click', () => {
+            smoothScrollTo(slider, slider.scrollLeft + sliderStep);
+        rightSound.volume = .1;
+        rightSound.play();
+    });
+    })
+
+    function smoothScrollTo(element, target) {
+        const duration = 300; // Adjust this value to control the scrolling speed (in milliseconds)
+        const start = element.scrollLeft;
+        const startTime = performance.now();
+
+        function scroll(time) {
+            const elapsed = time - startTime;
+            element.scrollLeft = easeInOutCubic(elapsed, start, target - start, duration);
+
+            if (elapsed < duration) {
+                requestAnimationFrame(scroll);
+            }
+        }
+
+        function easeInOutCubic(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t * t + b;
+            t -= 2;
+            return c / 2 * (t * t * t + 2) + b;
+        }
+        requestAnimationFrame(scroll);
+    }
+
+
+
+</script>
+
+
+{% endblock %}

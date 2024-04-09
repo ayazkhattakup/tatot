@@ -1,0 +1,415 @@
+{% extends 'videoBase.html' %}
+
+{% block VideoContent %}
+{% include 'videoNavbar.html' %}
+{% load static %}
+
+<style>
+    @media screen and (max-width:1280px) and (min-width:0px) {
+        .video-screen {
+            width: 50vw;
+            border: 10px solid white;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    }
+
+    @media screen and (max-width:8000px) and (min-width:1280px) {
+        .video-screen {
+            box-sizing: border-box;
+            border:20px solid white;
+            width: 50vw;
+            max-height: 35rem;
+            background-color: black;
+            text-align: center;
+        }
+    }
+    .bordered-cate {
+        border: 2px solid red;
+    }
+</style>
+
+<div class="sidebar">
+
+    <div id="hide-btn">
+        <i class="fa-solid fa-angles-right"></i>
+    </div>
+
+    <div class="categories">
+        <img class="img-fluid" width="100" src="{% static 'images/video_media/live-tv.png' %}" alt="live-tv-icon">
+        {% for category in all_categories %}
+        <a href="{% url 'categorized-videos' %}?category-id={{category.id}}" class="cate-a mt-3">
+            <img src="{{category.img.url}}"  class="cat-img {% if category.id == category_id %} bordered-cate {% endif %} img-fluid" alt="{{category.name}}">
+        </a>
+        {% endfor %}
+    </div>
+    <div class="videos">
+        <h1 class="cate-name mb-5">{{category.name}}</h1>
+        <div class="thumbnails">
+            {% for video in videos %}
+            <a class="thumb-a" id="{{video.id}}">
+                <img class="img-fluid thumb" src="{{video.cover.url}}" alt="{{video.title}}">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+<div class="video-home-wrapper">
+    <div class="video-player">
+        <div class="screen">
+            <video autoplay controls src=" {% if first_video.adilio_link %} {{first_video.adilio_link}} {% else %} {{first_video.video_file.url}} {% endif %}" id="{{first_video.id}}" class="video-screen"></video>
+        </div>
+        <div class="controls">
+            <h3>
+                <span id="prev-btn">
+                    <i class="fa-solid fa-backward-step"></i>
+                </span>
+            </h3>
+            <h1>
+                <span id="play-btn">
+                    <i class="fa-solid fa-pause"></i>
+                </span>
+            </h1>
+            <h3>
+                <span id="next-btn">
+                    <i class="fa-solid fa-forward-step"></i>
+                </span>
+            </h3>
+            <h5>
+                <span id="sound-btn">
+                    <i class="fa-solid fa-volume-high"></i>
+                </span>
+            </h5>
+            <h5>
+                <span id="fav-btn">
+                    <i class="fa-regular fa-heart"></i>
+                </span>
+            </h5>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script id="for-video-playing">
+
+
+function MarkView (video_id) {
+    let xhr = new XMLHttpRequest();
+                xhr.open("GET", `{% url "mark-viewed" %}?id=${video_id}`)
+                xhr.onload = function () {
+                    console.log(xhr.response);
+                }
+                xhr.send()
+}
+
+    
+    let videos = document.querySelectorAll('.thumb-a');
+    let screen = document.querySelector('.video-screen');
+    const clickEvent = new Event('click');
+    let playBtn = document.getElementById('play-btn');
+    let soundBtn = document.getElementById('sound-btn');
+    let currentVideoId;
+    let firstVideoId = videos[0].id
+    let Ids = [];
+    let nextBtn = document.getElementById('next-btn');
+    let prevBtn = document.getElementById('prev-btn');
+    let favBtn = document.getElementById('fav-btn')
+
+    let videoId;
+
+    favBtn.addEventListener("click", event => {
+        let curVideoId = screen.id;
+        
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", `{% url 'favorite-videos' %}?vid-id=${curVideoId}`, true)
+        
+        xhr.onload = function() {
+            console.log(xhr.response);
+        }
+
+        xhr.send();
+        
+    })
+    
+    screen.addEventListener("pause", event => {
+        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'
+    })
+    
+    screen.addEventListener("play", event => {
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'
+        
+    })
+
+    for (let vi of videos) {
+        id = parseInt(vi.id);
+        Ids.push(id);
+    }
+
+    // TO PLAY NEXT VIDEO 
+
+    nextBtn.addEventListener("click", event => {
+
+        let currentScreenId = screen.id;
+        currentScreenId = parseInt(currentScreenId);
+
+        let currentIdIndex = Ids.indexOf(currentScreenId);
+        
+        if (currentIdIndex == -1) {
+            currentIdIndex = 0;
+        }
+        
+        let nextVideoIndex = currentIdIndex + 1;
+        console.log(nextVideoIndex);
+
+        let nextVideoId = Ids[nextVideoIndex];
+
+        let xhr1 = new XMLHttpRequest();
+
+        xhr1.open("GET", `{% url 'get-video' %}?video-id=${nextVideoId}`)
+
+        xhr1.onload = function () {
+            let response = xhr1.response;
+            response = JSON.parse(response);
+            let vid = response['video']
+            
+            if (vid.adilio_link) {
+                video_url = vid.adilio_link;
+                screen.src = video_url;
+                let vid_id = parseInt(vid.id);
+                MarkView(vid_id )
+
+            } else {
+                video_url = vid.video_file;
+                screen.src = '/media/' + video_url;
+                let vid_id = parseInt(vid.id);
+                MarkView(vid_id )
+
+            }
+            screen.id = vid.id;
+
+        }
+
+        xhr1.send();
+
+    })
+
+    // TO PLAY PREVIOUS VIDEO 
+
+    prevBtn.addEventListener("click", event => {
+
+        let currentScreenId = screen.id;
+        currentScreenId = parseInt(currentScreenId);
+
+
+        let currentIdIndex = Ids.indexOf(currentScreenId);
+        
+        if (currentIdIndex == -1) {
+            currentIdIndex = 0;
+        }
+
+        let nextVideoIndex = currentIdIndex - 1;
+        console.log(nextVideoIndex);
+
+        let nextVideoId = Ids[nextVideoIndex];
+
+        let xhr1 = new XMLHttpRequest();
+
+        xhr1.open("GET", `{% url 'get-video' %}?video-id=${nextVideoId}`)
+
+        xhr1.onload = function () {
+            let response = xhr1.response;
+            response = JSON.parse(response);
+            vid = response['video']
+
+            if (vid.adilio_link) {
+                video_url = vid.adilio_link;
+                screen.src = video_url;
+                let vid_id = parseInt(vid.id);
+                MarkView(vid_id )
+            } else {
+                video_url = vid.video_file;
+                screen.src = '/media/' + video_url;
+                let vid_id = parseInt(vid.id);
+                MarkView(vid_id )
+            }
+            screen.id = vid.id;
+
+        }
+
+        xhr1.send();
+
+    })
+
+    // CONTINUOUSLY VIDEO PLAYING 
+
+    screen.addEventListener("ended", event => {
+        let currentScreenId = screen.id;
+        currentScreenId = parseInt(currentScreenId);
+
+
+        let currentIdIndex = Ids.indexOf(currentScreenId);
+        
+        if (currentIdIndex == -1) {
+            currentIdIndex = 0;
+        }
+        
+        let nextVideoIndex = currentIdIndex + 1;
+        console.log(nextVideoIndex);
+
+        let nextVideoId = Ids[nextVideoIndex];
+
+        let xhr1 = new XMLHttpRequest();
+
+        xhr1.open("GET", `{% url 'get-video' %}?video-id=${nextVideoId}`)
+
+        xhr1.onload = function () {
+            let response = xhr1.response;
+            response = JSON.parse(response);
+            vid = response['video']
+
+            if (vid.adilio_link) {
+                video_url = vid.adilio_link;
+                screen.src = video_url;
+            } else {
+                video_url = vid.video_file;
+                screen.src = '/media/' + video_url;
+                
+            }
+            screen.id = vid.id;
+
+        }
+
+        xhr1.send();
+    })
+
+
+
+    ////////////////////////////////////////
+
+    playBtn.addEventListener("click", event => {
+        if (screen.paused) {
+            screen.play();
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'
+        } else if (screen.play) {
+            screen.pause();
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'
+        }
+    })
+
+    let muted = false;
+
+    soundBtn.addEventListener("click", event => {
+        if (!muted) {
+            screen.muted = true;
+            muted = true;
+            soundBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>'
+        } else {
+            screen.muted = false;
+            muted = false;
+            soundBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>'
+        }
+    })
+
+
+    videos.forEach(video => {
+        video.addEventListener("click", event => {
+            event.preventDefault();
+            videoId = parseInt(video.id);
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open("GET", `{% url 'get-video' %}?video-id=${videoId}`)
+
+            xhr.onload = function () {
+
+                let response = xhr.response;
+                response = JSON.parse(response);
+                let vid = response['video']
+
+                if(vid.adilio_link) {
+                    
+                    video_url = vid.adilio_link;
+                    screen.src = video_url;
+                    let vid_id = parseInt(vid.id);
+                    MarkView(vid_id )
+                } else {
+                    video_url = vid.video_file;
+                    screen.src = '/media/' + video_url
+                    let vid_id = parseInt(vid.id);
+                    MarkView(vid_id)
+                }
+                screen.id = videoId;
+
+                
+
+                hideShowBtn.dispatchEvent(clickEvent);
+            }
+            xhr.send();
+        })
+    })
+</script>
+
+
+
+<script>
+
+    let hideShowBtn = document.getElementById('hide-btn');
+    let sidebar = document.querySelector('.sidebar');
+    let sidebarShowing = false;
+    let screenWidth = parseInt(window.innerWidth);
+
+    hideShowBtn.addEventListener("click", event => {
+        if (!sidebarShowing) {
+            sidebar.style.transition = '.3s'
+            sidebar.style.right = '0%';
+            hideShowBtn.style.transform = 'translate(0%, -50%) rotate(360deg)'
+            sidebarShowing = true;
+        } else if (sidebarShowing) {
+            if (screenWidth < 8300 && screenWidth >= 1200) {
+                sidebar.style.right = '-42%';
+                sidebarShowing = false;
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+
+            }
+            if (screenWidth < 1200 && screenWidth >= 1000) {
+                sidebar.style.right = '-50%';
+                sidebarShowing = false;
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+
+            }
+            if (screenWidth < 1000 && screenWidth >= 700) {
+                sidebar.style.right = '-54%';
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+                sidebarShowing = false;
+            }
+            if (screenWidth < 700 && screenWidth >= 500) {
+                sidebar.style.right = '-62%';
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+                sidebarShowing = false;
+            }
+            if (screenWidth < 500 && screenWidth >= 0) {
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+                sidebar.style.right = '-74%';
+                sidebarShowing = false;
+            }
+
+        }
+    })
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+{% block adminContent %}
+
+{% include 'admin_panel_templates/navbar.html' %}
+{% load static %}
+
+
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Upload to Homepage Collection  </h1>
+    </div>
+    <form method="post" action="" class="row d-flex justify-content-center mt-5 align-items-center" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-lg-8">
+            <label for="" class="label">
+                <strong>*Video Title</strong>
+            </label>
+            <div class="row">
+                <input type="text" required name="title">
+            </div>
+            <div class="row mt-4 justify-content-between">
+                <div class="col-lg-5">
+                    <div class="row mb-2">
+                        <label for=""><strong>*MP4 Link</strong></label>
+                        <input name="ad_link" type="text">
+                    </div>
+                    <div class="row mt-4 mb-4">
+                        <label for=""><strong>*Cover Photo</strong></label>
+                        <input required type="file" name="cover-img" class="form-control">
+                    </div>
+                    <div class="row mt-5">
+                        <button class="btn" style="background-color: var(--orange);color:white;font-family: Boldervan;font-size: 20px;letter-spacing: 2px;">Upload Video</button>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-flex flex-column">
+                    <div class="row mb-4">
+                        <label for="">*Description</label>
+                        <textarea required name="description" class="text-" id="" style="width:100; height: 6rem;" ></textarea>
+                    </div>
+
+
+                    <div class="row mb-4">
+                        <label for=""><strong>*Video File</strong></label>
+                        <input required type="file" name="video-file" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+{% endblock %}
+
+

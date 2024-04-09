@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/18ee09c425.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <title>TatorTot Kids Club</title>
+</head>
+<style>
+    video.video-screen.base-video {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+        background-color: black;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    #download-btn-home {
+        color: white;
+        position: absolute;
+        left: 2%;
+        top: 3%;
+        background-color: var(--orange);
+        padding: .6rem 1rem;
+        border-radius: 30px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        box-shadow: 5px 5px 8px gray;
+    }
+    .home-container {
+        background: url('{% static "images/bg.png" %}');
+        width: 100%;
+        min-height: 100vh;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }   
+    .home-container img.btn-img {
+        box-shadow: 0px 0px 5px gray;
+        z-index: 1;
+        cursor: pointer;
+        transition: 1s;
+    }
+    .home-container img.btn-img:hover {
+        scale: 1.2;
+    }
+    .fun-images {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+    }
+    .fun-images img {
+        position: absolute;
+        width: 70vh;
+        object-fit: cover;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -10;
+        cursor: pointer;
+    }
+</style>
+<body>
+
+
+    <button style="font-family: Boldervan;letter-spacing: 2px;" id="download-btn-home">    <i class="fa-solid fa-download"></i>   Download App</button>
+
+
+<!-- <video autoplay src="{% static 'images/intro.mp4' %}" class="video-screen base-video"></video> -->
+
+
+
+<!-- <div class="home-wrapper">
+    <div class="container">
+        <div class="row justify-content-around">
+            <div  class="col-4 col-sm-6 col-md-4 col-lg-3">
+                <img width="100%"  src="{% static 'images/logo.png' %}" alt="">
+            </div>
+        </div>
+        <div class="row justify-content-between align-items-center">
+            <div  class="col-6 l-a col-sm-6 col-md-5 col-lg-3">
+                <a href="{% url 'video-home' %}" id="tv-link" class="l-a">
+                    <img style="width:100%;" class="second-img" src="{% static 'images/video_media/lmtv.png' %}" alt="">
+                    <img style="width:100%;" src="{% static 'images/video_media/tv-a.png' %}" class="first-img" alt="">
+                </a>
+            </div>
+            <div  class="col-6 col-sm-6 col-md-5 col-lg-3">
+                <a href="{% url 'book-home' %}" id="book-link" class="l-a">
+                    <img style="width:90%;" class="second-img" src="{% static 'images/video_media/book-a.png' %}" alt="">
+                    <img style="width:70%;" src="{% static 'images/video_media/book-club.png' %}" class="first-img" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+
+
+<div class="home-container">
+    <div class="container">
+        <div class="row d-flex flex-row justify-content-center align-items-center">
+            <div class="logo" style="width:fit-content;">
+                <img src="{% static 'images/logo.png' %}" class="home-logo" alt="This is just a logo image">
+            </div>
+        </div>
+        <div class="row buttons gap-5 justify-content-around align-items-center d-flex flex-row flex-wrap">
+            <div class="col-lg-3 col-5 col-sm-5 col-md-4">
+                <a href="{% url 'video-home' %}">
+                    <img width="100%" class="img-fluid btn-img" id="tv" src="{% static 'images/buttons/tv.png' %}" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-5 col-sm-5 col-md-4">
+                <a href="#">
+                    <img width="100%" class="img-fluid btn-img" id="music"  src="{% static 'images/buttons/music.png' %}" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-5 col-sm-5 col-md-4">
+                <a href="{% url 'learn-home' %}">
+                    <img width="100%" class="img-fluid btn-img"  id="learn" src="{% static 'images/buttons/learn.png' %}" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-5 col-sm-5 col-md-4">
+                <a href="{% url 'book-home' %}">
+                    <img width="100%" class="img-fluid btn-img"  id="book" src="{% static 'images/buttons/books.png' %}" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-5 col-sm-5 col-md-4">
+                <a href="#">
+                    <img width="100%" class="img-fluid btn-img"  id="games" src="{% static 'images/buttons/games.png' %}" alt="">
+                </a>
+            </div>
+            <div class="col-lg-3 col-5 col-sm-5 col-md-4">
+                <a href="#">
+                    <img width="100%" class="img-fluid btn-img"  id="cool" src="{% static 'images/buttons/cool.png' %}" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="fun-images">
+        <img src="{% static 'images/buttons/booksfun.png' %}" alt="" id="fun-books">
+        <img src="{% static 'images/buttons/tvfun.png' %}" alt="" id="fun-tv">
+        <img src="{% static 'images/buttons/learnfun.png' %}" alt="" id="fun-learn">
+        <img src="{% static 'images/buttons/gamesfun.png' %}" alt="" id="fun-games">
+        <img src="{% static 'images/buttons/coolfun.png' %}" alt="" id="fun-cool">
+        <img src="{% static 'images/buttons/musicfun.png' %}" alt="" id="fun-music">
+    </div>
+</div>
+
+<div class="install-modal-wrapper">
+    <div class="install-modal">
+        <div class="logo mb-3">
+            <img src="{% static 'images/logo.png' %}" width="100" alt="">
+        </div>
+        <div class="text mb-3">
+            Would you like to add TatorTot Book Club to your home screen ?
+        </div>
+        <button id="install-id" class="install-btn  mb-3 mt-2">
+            <i class="fa-solid fa-download"></i>
+            Download Our App!
+        </button>
+    </div>
+</div>
+
+
+{% include 'footer.html' %}
+
+<script id="installing-tator-toe">
+
+    const previouslyLoggedIn = sessionStorage.getItem('first-time');
+
+    let deferredPrompt;
+    let installModalShowing = false;
+    let installModalWrapper = document.querySelector('.install-modal-wrapper');
+    let installModal = document.querySelector('.install-modal');
+
+    let showInstallModal = document.getElementById('download-btn-home');
+    showInstallModal.addEventListener("click", event => {
+
+        if (!installModalShowing) {
+            installModalWrapper.style.display = 'flex';
+            installModalShowing = true;
+        }
+    })
+
+    installModalWrapper.addEventListener("click", event => {
+        if (installModalShowing) {
+            if (event.target !== installModal && !installModal.contains(event.target)) {
+
+                installModalWrapper.style.display = 'none';
+                installModalShowing = false;
+            }
+        }
+    })
+
+    window.addEventListener("beforeinstallprompt", event => {
+        event.preventDefault();
+        deferredPrompt = event;
+    })
+
+    let installBtn = document.getElementById('install-id');
+
+    installBtn.addEventListener("click", event => {
+
+        deferredPrompt.prompt();
+    })
+
+</script>
+
+
+<script id="handling-button-images">
+
+    let bookImg = document.getElementById('book')
+    let learnImg = document.getElementById('learn')
+    let musciImg = document.getElementById('music')
+    let tvImg = document.getElementById('tv')
+    let gamesImg = document.getElementById('games')
+    let coolImg = document.getElementById('cool')
+
+
+    bookImg.addEventListener("mouseenter", event => {
+        bookImg.src = "{% static 'images/buttons/booksfun.png' %}"
+    })
+    bookImg.addEventListener("mouseout", event => {
+        bookImg.src = "{% static 'images/buttons/books.png' %}"
+    })
+    
+    learnImg.addEventListener("mouseenter", event => {
+        learnImg.src = "{% static 'images/buttons/learnfun.png' %}"
+    })
+    learnImg.addEventListener("mouseout", event => {
+        learnImg.src = "{% static 'images/buttons/learn.png' %}"
+    })
+
+    musciImg.addEventListener("mouseenter", event => {
+        musciImg.src = "{% static 'images/navs/coming.png' %}";
+    })
+    musciImg.addEventListener("mouseout", event => {
+        musciImg.src = "{% static 'images/buttons/music.png' %}";
+    })
+
+    tvImg.addEventListener("mouseenter", event => {
+        tvImg.src = "{% static 'images/buttons/tvfun.png' %}";
+    })
+    tvImg.addEventListener("mouseout", event => {
+        tvImg.src = "{% static 'images/buttons/tv.png' %}";
+    })
+
+    gamesImg.addEventListener("mouseenter", event => {
+        gamesImg.src = "{% static 'images/navs/coming.png' %}"
+    })
+    gamesImg.addEventListener("mouseout", event => {
+        gamesImg.src = "{% static 'images/buttons/games.png' %}"
+    })
+    
+    coolImg.addEventListener("mouseenter", event => {
+        coolImg.src = "{% static 'images/navs/coming.png' %}";
+    })
+    coolImg.addEventListener("mouseout", event => {
+        coolImg.src = "{% static 'images/buttons/cool.png' %}";
+    })
+    
+</script>
+
+
+
+<script id="for-sound">
+    let tv = document.getElementById('tv-link');
+    let book = document.getElementById('book-link');
+
+    let tvSound = new Audio('{% static "sounds/woosh1.wav" %}')
+    let bookSound = new Audio('{% static "sounds/woosh2.wav" %}')
+
+    tv.addEventListener("click", event => {
+        tvSound.play();
+    })
+    
+    book.addEventListener("click", event => {
+        bookSound.play();
+    })
+
+</script>
+
+
+<!-- <script id="for-video">
+    let video = document.querySelector('.base-video');
+
+    video.addEventListener("ended", event => {
+        video.style.display = 'none';
+    })
+
+</script> -->
+
+<!-- <script>
+    let img1 = document.querySelectorAll('.first-img')[0];
+    let img2 = document.querySelectorAll('.first-img')[1];
+    let imgsecond1 = document.querySelectorAll('.second-img')[0];
+    let imgsecond2 = document.querySelectorAll('.second-img')[1];
+
+    img1.addEventListener('mouseenter', event => {
+        imgsecond1.style.display = 'block';
+        img1.style.opacity = '0';
+        img1.style.position = 'absolute';
+        imgsecond1.style.scale = '1';
+    })
+    imgsecond1.addEventListener('mouseout', event => {
+        imgsecond1.style.display = 'none';
+        img1.style.opacity = '1';
+        img1.style.position = 'relative';
+    })
+
+    img2.addEventListener('mouseenter', event => {
+        imgsecond2.style.display = 'block';
+        img2.style.opacity = '0';
+        img2.style.position = 'absolute';
+        imgsecond2.style.scale = '1.6';
+    })
+    imgsecond2.addEventListener('mouseout', event => {
+        imgsecond2.style.display = 'none';
+        img2.style.opacity = '1';
+        img2.style.position = 'relative';
+    })
+</script> -->
+
+</body>
+</html>

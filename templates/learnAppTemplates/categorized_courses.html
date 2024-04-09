@@ -1,0 +1,26 @@
+{% extends 'learnAppTemplates/base.html' %}
+{% block learnContent %}
+{% load static %}
+{% include 'learnAppTemplates/navbar.html' %}
+
+
+<div class="container learn-home-container">
+    <div class="row">
+        <h1 class="white-heading">{{category_name}}</h1>
+    </div>
+    <div class="row d-flex flex-row align-items-center mt-5 justify-content-sm-around justify-content-md-around justify-content-around courses-categories">
+        {% for course in courses %}
+        <form class="col-5 mt-3 col-sm-5 col-md-5 col-lg-3" action="{% url 'course' %}"  method="get">
+            <input type="text" name="id" hidden value="{{course.id}}">
+            <button type="submit">
+                <img src=" {% if course.cover %} {{course.cover.url}} {% else %} {% static 'images/bg.png' %} {% endif %}" style="width:100%;object-fit:cover;" alt="{{course.name}}">
+            </button>
+        </form>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,7 @@
+tatot_env/
+.env
+*.pyc
+__pycache__/
+test/
+tmp/
+**/migrations/**

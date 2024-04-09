@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'adminStyling.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/18ee09c425.js" crossorigin="anonymous"></script>
+    <title>Admin TaterTot Kids Club</title>
+</head>
+<style>
+    body{
+        background: url('{% static "images/gray_bg.png" %}');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
+<body style="min-height:100vh;">
+    {% if request.user.is_superuser %}
+    {% block adminContent %}
+
+    {% endblock %}
+    {% endif %}
+
+    <div class="show-sidebar-btn">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <div class="sidebar">
+        <span class="hide-btn">
+            <i class="fa-solid fa-bars"></i>
+        </span>
+
+        <a href="{% url 'admin-home' %}" class="home-nav side-nav d-flex align-items-center gap-2">
+            <i class="fa-solid fa-house"></i>
+            Dashboard
+        </a>
+
+        <div class="l-heading mt-3">
+            Upload Content
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'upload-video' %}">Upload Video</a>
+            </li>
+            <li>
+                <a href="{% url 'upload-book' %}">Upload Book</a>
+            </li>
+        </ul>
+        <div class="l-heading mt-3">
+            Videos
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'uploaded-videos' %}">All Videos</a>
+            </li>
+            <li>
+                <a href="{% url 'playlists' %}">Playlists</a>
+            </li>
+            <li>
+                <a href="{% url 'create-playlist' %}">Create Playlist</a>
+            </li>
+        </ul>
+        <div class="l-heading mt-3">
+            Books
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'uploaded-books' %}">All Books</a>
+            </li>
+            <li>
+                <a href="{% url 'bookshelves' %}">Bookshelves</a>
+            </li>
+            <li>
+                <a href="{% url 'create-bookshelf' %}">Create Bookshelf</a>
+            </li>
+        </ul>
+
+        <div class="l-heading mt-3">
+            Homepage Collection
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'home-collection' %}">All Videos</a>
+            </li>
+            <li>
+                <a href="{% url 'home-collection-upload' %}">Upload Video</a>
+            </li>
+        </ul>
+
+        <div class="l-heading mt-3">
+            Learn Courses
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'courses-collection' %}">All Courses</a>
+            </li>
+            <li>
+                <a href="{% url 'course-upload' %}">Upload a Course</a>
+            </li>
+        </ul>
+
+        <div class="l-heading mt-3">
+            Courses Categories 
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'course-categories' %}">All Courses Categories</a>
+            </li>
+            <li>
+                <a href="{% url 'course-category-upload' %}">Create Course Category</a>
+            </li>
+        </ul>
+
+
+
+        <!-- <div class="l-heading mt-3">
+            App Design
+        </div>
+        <ul>
+            <li>
+                <a href="">Backgrounds</a>
+            </li>
+            <li>
+                <a href="">Splash Video</a>
+            </li>
+        </ul> -->
+
+        <div class="l-heading mt-3">
+            Design 
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'design-layout' %}">Attachments </a>
+            </li>
+        </ul>
+        <div class="l-heading mt-3">
+            User Management
+        </div>
+        <ul>
+            <li>
+                <a href="/admin/auth/user/">Users and Team</a>
+            </li>
+            <li>
+                <a href="/admin/Src_App/userprofile/">User Profiles</a>
+            </li>
+        </ul>
+        <div class="l-heading mt-3">
+            Support
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'reports' %}">User Messages</a>
+            </li>
+        </ul>
+        <div class="l-heading mt-3">
+            Admin User
+        </div>
+        <ul>
+            <li>
+                <a href="{% url 'logout' %}">Logout</a>
+            </li>
+        </ul>
+        
+    </div>
+
+
+
+    <script  id="show-hide-sidebar-scripting">
+        let sidebar = document.querySelector('.sidebar');
+        let hideBtn = document.querySelector('.hide-btn');
+        let showBtn = document.querySelector('.show-sidebar-btn');
+
+
+        sidebar.style.transition = '1s';
+        hideBtn.addEventListener("click", event => {
+            sidebar.style.left = '-20rem';
+        })
+
+        showBtn.addEventListener("click", event => {
+            sidebar.style.left = '0%';
+        })
+    </script>
+
+    <!-- ///////////////////////////////////////////////// -->
+
+    
+
+</body>
+
+</html>

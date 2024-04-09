@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="container login-container mt-5">
+    <div class="row d-flex flex-row mt-5 justify-content-center align-items-center">
+        <div class="col-lg-5 form">
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <h2 class="l-heading" style="font-family:Boldervan;">
+                    <img class="img-fluid" src="{% static 'images/logo.png' %}" width="200" alt=""> Sign In 
+                </h2>
+                {% if message %}
+                    <span class="error text-danger">{{message}}</span>
+                {% endif %}
+                <div class="form-outline mb-4">
+                  <input  type="email" name="email" id="form2Example1" class="form-control" />
+                  <label class="form-label" for="form2Example1">Email address</label>
+                </div>
+                <div class="form-outline mb-4">
+                  <input name="password" type="password" id="form2Example2" class="form-control" />
+                  <label class="form-label" for="form2Example2">Password</label>
+                </div>
+                <button type="submit" class="sign-in-btn">Go!</button>
+                <div class="form-outline mt-3 d-flex flex-column align-items-center justify-content-center">
+                    Not a member yet ? <a class="anc" href="{% url 'register' %}">Join Our TatorTot Kids Club Now</a>
+                </div>
+              </form>
+        </div>
+    </div>
+</div>  
+
+<script>
+
+    let firstInput = document.getElementById('form2Example1');
+    firstInput.focus();
+    
+</script>
+
+
+{% endblock %}

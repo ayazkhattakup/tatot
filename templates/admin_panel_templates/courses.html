@@ -1,0 +1,160 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+
+{% block adminContent %}
+{% include 'admin_panel_templates/navbar.html' %}
+
+{% load static %}
+
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Your Courses</h1>
+    </div>
+
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-lg-10 d-flex flex-row justify-content-between align-items-center">
+            <form action="" style="width:fit-content;" method="post">
+                {% csrf_token %}
+                <input hidden type="text"  id="ids" name="ids">
+                <button type="submit" class="btn delete-multiple-btn btn-danger">Delete Selected Items</button>
+            </form>
+        </div>
+        <div class="col-lg-10">
+            <table class="books-table" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" class="form-check-input master-checkbox"></th>
+                        <th>ID</th>
+                        <th>Cover</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for course in courses %}
+                    <tr>
+                        <td><input type="checkbox"  class="form-check-input  item-selector"  id="{{course.id}}"></td>
+                        <td>{{course.id}}</td>
+                        <td><a href="{% url 'playlist' %}?id={{course.id}}">
+                                <img style="object-fit:cover;width:10rem;height:5rem;"
+                                    src="{% if course.cover %} {{course.cover.url}} {% endif %}" alt="">
+                            </a></td>
+                        <td>{{course.name}}</td>
+                        <td>
+                            <a href="{% url 'course-details' %}?id={{course.id}}" class="btn details">Details</a>
+                            <a id="{{course.id}}" class="btn delete-btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-10 mt-5 d-flex gap-4 justify-content-center">
+            {% if courses.has_previous %}
+            <a href="{% url 'courses-collection' %}?page={{courses.previous_page_number}}" class="btn btn-prev">Prev</a>
+            {% endif %}
+            {% if courses.has_next %}
+            <a href="{% url 'courses-collection' %}?page={{courses.next_page_number}}" class="btn btn-next">Next</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="confirmation-box">
+    <div class="icon">
+        <img src="{% static 'images/logo.png' %}" width="150" alt="">
+    </div>
+    <div class="message">
+        Do you want to continue to the action ? 
+    </div>
+    <div class="btns d-flex flex-row gap-3">
+        <form action="" method="post" style="width:fit-content;">
+            {% csrf_token %}
+            <input name="id"  type="text" hidden id="id-to-delete-input">
+            <button id="confirm-delete" type="submit" class="btn btn-danger">Yes</button>
+        </form>
+        <button id="deny-delete" class="btn btn-success">No</button>
+    </div>
+</div>
+
+
+
+
+<script id="for-deleting-items">
+
+    let confirmDeleteBtn = document.getElementById('confirm-delete');
+    let deleteBtns = document.querySelectorAll('.delete-btn');
+    let denyDelete = document.getElementById('deny-delete');
+    let confirmationBox = document.querySelector('.confirmation-box');
+    let idInput = document.getElementById('id-to-delete-input');
+
+    let idsString;
+    let idToDelete;
+
+    deleteBtns.forEach(btn => {
+        btn.addEventListener("click", event => {
+            event.preventDefault();
+            idToDelete = event.target.id;
+            confirmationBox.style.display = 'flex';
+            idInput.value = idToDelete;
+        })
+    });
+
+
+    denyDelete.addEventListener("click", event => {
+        confirmationBox.style.display = 'none';
+    });
+
+</script>
+
+
+<script id="deleting-mutlitpe-items">
+
+let deleteMultipleBtn = document.querySelector('.delete-multiple-btn');
+let itemSelectors = document.querySelectorAll('.item-selector');
+let masterCheckbox = document.querySelector('.master-checkbox');
+let multipleIdsInput = document.getElementById("ids");
+let itemIds = [];
+
+deleteMultipleBtn.addEventListener("click", event => {
+    if(itemIds.length === 0) {
+        event.preventDefault();
+    }
+})
+
+masterCheckbox.addEventListener("change", event => {
+    itemIds = []; // Reset the itemIds array
+    itemSelectors.forEach(itemSelector => {
+        itemSelector.checked = masterCheckbox.checked;
+        if (itemSelector.checked) {
+            itemIds.push(itemSelector.id);
+            multipleIdsInput.value = JSON.stringify(itemIds);
+        }
+    });
+    console.log(itemIds);
+});
+
+itemSelectors.forEach(itemSelector => {
+    itemSelector.addEventListener("change", event => {
+        if (itemSelector.checked) {
+            itemIds.push(itemSelector.id);
+            multipleIdsInput.value = JSON.stringify(itemIds);
+        } else {
+            itemIds = itemIds.filter(id => id !== itemSelector.id);
+            multipleIdsInput.value = JSON.stringify(itemIds);
+        }
+        console.log(itemIds);
+    });
+});
+
+
+
+
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends 'videoBase.html' %}
+
+{% block VideoContent %} 
+
+<style>
+    @media screen and (max-width:1280px) and (min-width:0px) {
+        .video-screen {
+            width: 50vw;
+            border: 10px solid white;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    }
+
+    @media screen and (max-width:8000px) and (min-width:1280px) {
+        .video-screen {
+            box-sizing: border-box;
+            border: 20px solid white;
+            width: 50vw;
+            max-height: 35rem;
+            background-color: black;
+            text-align: center;
+        }
+    }
+</style>
+
+
+
+{% include 'videoNavbar.html' %}
+{% load static %}
+
+
+<div class="sidebar">
+
+    <div id="hide-btn">
+        <i class="fa-solid fa-angles-right"></i>
+    </div>
+
+    <div class="categories">
+        <img class="img-fluid" width="100" src="{% static 'images/video_media/live-tv.png' %}" alt="">
+        {% for category in categories %}
+        <a href="{% url 'categorized-videos' %}?category-id={{category.id}}" class="cate-a mt-3">
+
+            <img src="{% if category.img %} {{category.img.url}} {% endif %}" class="cat-img img-fluid" alt="">
+        </a>
+        {% endfor %}
+    </div>
+    <div class="videos">
+        
+    </div>
+</div>
+
+
+<div class="video-home-wrapper">
+    <div class="video-player">
+        <div class="screen" >
+            <video autoplay controls src=" {% if first_video.adilio_link %} {{first_video.adilio_link}} {% endif %}" id="0" class="video-screen"></video>
+        </div>
+        <div class="controls">
+            <h3>
+                <span id="prev-btn">
+                    <i class="fa-solid fa-backward-step"></i>
+                </span>
+            </h3>
+            <h1>
+                <span id="play-btn">
+                    <i class="fa-solid fa-pause"></i>
+                </span>
+            </h1>
+            <h3>
+                <span id="next-btn">
+                    <i class="fa-solid fa-forward-step"></i>
+                </span>
+            </h3>
+            <h5>
+                <span id="sound-btn">
+                    <i class="fa-solid fa-volume-high"></i>
+                </span>
+            </h5>
+        </div>
+    </div>
+</div>
+
+
+
+<script id="videos-player">
+    let playBtn = document.getElementById('play-btn');
+    let screen = document.querySelector(".video-screen");
+    let nextBtn = document.getElementById('next-btn');
+    let prevBtn = document.getElementById('prev-btn');
+    let soundBtn = document.getElementById('sound-btn');
+    let videos;
+
+    screen.addEventListener("pause", event => {
+        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'
+    })
+    screen.addEventListener("play", event => {
+        playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'
+    })
+
+    window.addEventListener("load", event => {
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", '{% url "get-all-videos" %}', true);
+
+        xhr.onload = function () {
+
+            let response = xhr.response;
+            
+            let jsonData = JSON.parse(response);
+            
+            videos = jsonData.videos;
+
+            let firstVideo = videos[0]
+            console.log(firstVideo);
+            if (firstVideo.adilio_link) {
+                screen.src = firstVideo.adilio_link;
+            } else {
+                screen.src = '/media/' + firstVideo.video_file
+            }
+        }
+
+        xhr.send();
+    })
+
+    nextBtn.addEventListener("click", event => {
+        let id = parseInt(screen.id);
+        let idToPlay = id + 1;
+        let videoToPlay = videos[idToPlay]
+        screen.src = '/media/' + videoToPlay.video_file;
+        screen.id = idToPlay;
+
+    })
+
+    prevBtn.addEventListener("click", event => {
+        let id = parseInt(screen.id);
+        if (id > 0 ) {
+            let idToPlay = id - 1;
+            let videoToPlay = videos[idToPlay]
+            screen.src = '/media/' + videoToPlay.video_file;
+            screen.id = idToPlay;
+        }
+    })
+
+    soundBtn.addEventListener("click", event => {
+        if(screen.muted ) {
+            screen.muted = false;
+        } else if(!screen.muted) {
+            screen.muted = true;
+        }
+    })
+
+
+    playBtn.addEventListener("click", event => {
+        if (screen.paused) {
+            screen.play();
+            playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'
+        } else if (screen.play) {
+            screen.pause();
+            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'
+        }
+    })
+
+</script>
+
+
+<script >
+
+    let hideShowBtn = document.getElementById('hide-btn');
+    let sidebar = document.querySelector('.sidebar');
+    let sidebarShowing = false;
+    let screenWidth = parseInt(window.innerWidth);
+
+    let clickEvent = new Event("click");
+
+
+    hideShowBtn.addEventListener("click", event => {
+        if (!sidebarShowing) {
+            sidebar.style.transition = '.3s'
+            sidebar.style.right = '0%';
+            hideShowBtn.style.transform = 'translate(0%, -50%) rotate(360deg)'
+            sidebarShowing = true;
+        } else if (sidebarShowing) {
+            if (screenWidth < 8300 && screenWidth >= 1200) {
+                sidebar.style.right = '-42%';
+                sidebarShowing = false;
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+            }
+            if (screenWidth < 1200 && screenWidth >= 1000) {
+                sidebar.style.right = '-50%';
+                sidebarShowing = false;
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+            }
+            if (screenWidth < 1000 && screenWidth >= 700) {
+                sidebar.style.right = '-54%';
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+                sidebarShowing = false;
+            }
+            if (screenWidth < 700 && screenWidth >= 500) {
+                sidebar.style.right = '-62%';
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+                sidebarShowing = false;
+            }
+            if (screenWidth < 500 && screenWidth >= 0) {
+                hideShowBtn.style.transform = 'translate(0%, -50%) rotate(180deg)'
+                sidebar.style.right = '-74%';
+                sidebarShowing = false;
+            }
+        }
+    })
+
+</script>
+
+{% endblock %}

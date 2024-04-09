@@ -1,0 +1,418 @@
+:root {
+  --orange: #f49519;
+  --yellow: #f4e87c;
+  --blue: #cdf3f9;
+}
+
+
+
+@font-face {
+    font-family: 'Boldervan';
+    src: url('BoldenVan.woff');
+}
+
+@font-face {
+    font-family: 'Bebas';
+    src: url('BebasNeue-Regular.woff');
+}
+
+.side-nav {
+    text-decoration: none;
+}
+.side-nav:hover {
+    text-decoration: underline;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: serif;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    min-width: 1030px;
+    background: url('{% static "images/gray_bg.png" %}');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.confirmation-box {
+    padding: 2rem 3rem;
+    background-color: var(--orange);
+    box-shadow: 0px 0px 5px gray;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: fixed;
+    display: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.confirmation-box .message {
+    color: white;
+    font-family: Boldervan;
+    letter-spacing: 1px;
+}
+
+/* NAVBAR STYLING STARTS HERE  */
+
+nav {
+    padding: .2rem 1rem;
+    background-color: rgb(55, 57, 57);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav .logo img {
+    object-fit: cover;
+    width: 4rem;
+    height: 4rem;
+}
+
+nav .profile img {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* DASHBOARD SIDEBAR STYLING STARTS HERE  */
+
+.sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar {
+    width: 20rem;
+    border-right: var(--orange) 1.3px solid;
+    height: calc(100vh - 4.4rem);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    position: absolute; 
+    left: -20rem;
+    background-color: white;
+    padding: 1rem 2rem;
+    top:  calc(4.4rem + 0%);
+}
+
+.sidebar ul li {
+    list-style: none;
+}
+.show-sidebar-btn {
+    color: var(--orange);
+    position: absolute;
+    top: calc(1% + 4.4rem);
+    cursor: pointer;
+    left: 1rem;
+    font-size: 24px;
+}
+
+.show-sidebar-btn:hover {
+    text-shadow: 0px 0px 5px var(--orange);
+}
+
+.sidebar .hide-btn {
+    font-size: 24px;
+    color: var(--orange);
+    position: absolute;
+    top: 1%;
+    cursor: pointer;
+    right: 3%;
+}
+
+.sidebar .hide-btn:hover {
+    text-shadow: 0px 0px 5px var(--orange);
+    border-radius: 50%;
+}
+
+.sidebar .home-nav {
+    color: var(--orange);
+    font-family: Boldervan;
+    font-size: 20px;
+}
+
+.sidebar .l-heading {
+    color: var(--orange);
+    font-weight: 600;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.sidebar ul li a {
+    color: var(--orange);
+    font-weight: 400;
+    margin-bottom: .7rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* HOME PAGE STYLING STARTS  */
+
+.home-title {
+    color: var(--orange);
+    font-size: 53px;
+    text-align: center;
+    font-family: Boldervan;
+}
+
+.messages-box {
+    background-color: lightblue;
+    width: fit-content;
+    border-radius: 30px;
+    padding: 0rem 2rem;
+    font-size: 32px;
+}
+
+.messages-box .icon {
+    font-size: 50px;
+    color: white;
+}
+
+.messages-box .text {
+    gap: 0;
+}
+
+.messages-box .text .info-text {
+    margin-top: -1rem;
+    font-size: 45px;
+    letter-spacing: 2px;
+    font-family: Bebas;
+}
+
+.books {
+    background-color: var(--orange);
+    padding: 0 2rem;
+    gap: 1rem;
+    border-radius: 30px;
+}
+
+.books .icon {
+    color: white;
+    font-size: 45px;
+}
+
+.books .info-text {
+    text-align: center;
+    font-size: 45px;
+    letter-spacing: 2px;
+    font-family: Bebas;
+}
+
+.videos {
+    background-color: rgb(153, 195, 64);
+    padding: 0 2rem;
+    gap: 1rem;
+    border-radius: 30px;
+}
+
+.videos .icon {
+    color: white;
+    font-size: 45px;
+}
+
+.videos .info-text {
+    text-align: center;
+    font-size: 45px;
+    letter-spacing: 2px;
+    font-family: Bebas;    word-wrap:unset;
+}
+
+.subs-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.subs-stats .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subs-stats .stat .stat-head{
+    position: relative;
+    background-color: red;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    border: 13px solid white;
+    font-size: 45px;
+    letter-spacing: 2px;
+    font-family: Bebas;    
+    margin-bottom: -25px;
+}
+
+.subs-stats .stat .stat-body {
+    border-radius: 33px 33px 0px 0px ;
+    padding-top: 1.3rem;
+    display: flex;
+    flex-direction:  column;
+    align-items: center;
+    font-family: Bebas;
+}
+
+.subs-stats .stat .stat-body .b-text {
+    color: black;
+    font-size:30px;
+    font-size: 45px;
+    letter-spacing: 2px;
+    font-family: Bebas;
+}
+
+.subs-stats .stat .stat-body .subs-text {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.subs-stats .stat:nth-child(1) .stat-head {
+    background-color: rgb(250, 100, 100);
+}
+
+
+.subs-stats .stat:nth-child(1) .stat-body {
+    background-color: rgb(250, 100, 100);
+}
+
+.subs-stats .stat:nth-child(2) .stat-head {
+    background-color: rgb(120, 239, 239);
+}
+
+
+.subs-stats .stat:nth-child(2) .stat-body {
+    background-color: rgb(120, 239, 239);
+}
+
+.subs-stats .stat:nth-child(3) .stat-head {
+    background-color: lightsteelblue;
+}
+
+
+.subs-stats .stat:nth-child(3) .stat-body {
+    background-color: lightsteelblue;
+}
+
+.subs-stats .stat:nth-child(4) .stat-head {
+    background-color: rgb(161, 96, 223);
+}
+
+
+.subs-stats .stat:nth-child(4) .stat-body {
+    background-color: rgb(161, 96, 223);
+}
+
+.sp-stat {
+    background-color: var(--orange);
+    border-radius: 30px;
+    padding: 1rem 0;
+}
+
+.sp-stat .intro .icon {
+    font-size: 50px;
+    color: white;
+}
+
+.sp-stat .intro {
+    padding-left: 2rem;
+    font-size:21px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+    color: white;
+}
+
+.sp-stat .intro .stat-text {
+    font-family: Bebas;
+    font-size: 30px;
+    letter-spacing: 2px;
+}
+
+.sp-stat .sp-videos {
+    overflow-x: scroll;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-right: 1rem;
+    box-sizing: border-box;
+}
+
+.sp-videos::-webkit-scrollbar {
+    display: none;
+}
+
+.sp-stat .sp-videos .video-cover {
+    width: 14rem;
+    height: 8rem;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+
+/* ALL BOOKS LIST PAGE STYLING STARTS  */
+
+.books-table {
+    border: 1px solid var(--orange);
+    padding: 1rem;
+    border-radius: 20px;
+    margin-top: 5rem;
+}
+
+.books-table thead tr {
+    background-color: var(--orange);
+}
+
+.books-table thead tr th {
+    font-size: 20px;
+    font-family: Boldervan;
+    letter-spacing: 2px;
+    color: white;
+    padding: 1rem;
+}
+
+.books-table tbody tr td {
+    padding: 1rem;
+    border-bottom: 1px solid white;
+    width:  fit-content;
+    background-color: var(--yellow);
+}
+
+
+.books-table tbody tr td a.details {
+    color: black;
+    background-color: var(--orange);
+}
+
+.books-table tbody tr td a.details:hover {
+    box-shadow: 0px 0px 2px gray;
+}
+
+a.btn-next {
+    background-color: var(--orange);
+    font-family: Boldervan;
+    letter-spacing: 2px;
+    color: white;
+}
+
+a.btn-prev {
+    background-color: var(--orange);
+    font-family: Boldervan;
+    letter-spacing: 2px;
+    color: white;
+}

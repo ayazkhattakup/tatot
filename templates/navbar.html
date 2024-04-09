@@ -1,0 +1,59 @@
+{% load static %}
+
+<nav>
+    
+    <div class="left-side">
+        <a href="{% url 'book-home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Website Logo" class="logo">
+        </a>
+        <button id="show-modal" class="download">
+            <img class="download-img" src="{% static 'images/video_media/download-btn.png' %}" alt="">
+        </button>
+        <a href="{% url 'settings' %}" style="font-family:Boldervan;" class="parents-btn">
+            Parents <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="right-side">
+        <a href="{% url 'favourites' %}">
+            <i class="fa-solid fa-heart"></i>
+        </a>
+        <form class="search-form" method="get" action="{% url 'search-book' %}">
+            <input type="text" name="q" class="search-input">
+            <button type="submit" style="display:none;" class="search-submit"></button>
+        </form>
+        <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+</nav>
+
+<script>
+
+    let searchIcon = document.querySelector('.fa-magnifying-glass');
+    let searchForm = document.querySelector('.search-form');
+
+    hidden = true;
+    let searchEvent = new Event('submit');
+    searchIcon.addEventListener("click", event => {
+        if (hidden) {
+            hidden = false;
+            searchForm.style.display = 'flex';
+        } else {
+            submitSearch = document.querySelector('.search-submit')
+            submitSearch.click();
+        }
+    })
+
+</script>
+
+
+
+<script id="settings-modal">
+
+let settingsBtn = document.getElementById('settings-btn');
+
+settingsBtn.addEventListener("click", event => {
+
+})
+
+
+</script>

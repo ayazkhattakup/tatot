@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+{% include 'navbar.html' %}
+{% load static %}
+
+
+<h1 class="heading" style="font-family:Boldervan;">Search Results for "{{query}}"</h1>
+<div class="shelves">
+    <div class="shelve">
+        <img src="{% static 'images/shelf.png' %}"  alt="" class="shelf-img ">
+        <div class="books">
+                <button class="left">
+                    <i class="fa-solid fa-circle-left"></i>
+                </button>
+                <button class="right">
+                    <i class="fa-solid fa-circle-right"></i>
+                </button>
+    
+            {% for flipbook in results %}
+            <a href="{% url 'read-book' id=flipbook.id %}" class="book">
+                <img src="{{flipbook.img.url}}" alt="" class="book-img">
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<style>
+    @media screen and (min-width:790px) {
+        .left {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        background:none;
+        border: none;
+        outline: none;
+        font-size: 25px;
+        z-index: 10000;
+        color: var(--orange);
+    }
+    .right {
+        position: absolute;
+        top: 50%;
+        font-size: 25px;
+        right: 0;
+        background:none;
+        border: none;
+        outline: none;
+        z-index: 10000;
+        color: var(--orange);
+    }
+    }
+    @media screen and (max-width:790px) {
+        .left {
+            display: none;
+        }
+        .right {
+            display: none;
+        }
+    }
+</style>
+
+
+<script>
+    
+    let slider = document.querySelector('.books');
+
+    let leftBtn = document.querySelector('.left');
+    let rightBtn = document.querySelector('.right');
+    let sliderStep = 100;
+
+    leftBtn.addEventListener('click', () => {
+  smoothScrollTo(slider, slider.scrollLeft - sliderStep);
+});
+
+rightBtn.addEventListener('click', () => {
+  smoothScrollTo(slider, slider.scrollLeft + sliderStep);
+});
+
+function smoothScrollTo(element, target) {
+  const duration = 300; // Adjust this value to control the scrolling speed (in milliseconds)
+  const start = element.scrollLeft;
+  const startTime = performance.now();
+
+  function scroll(time) {
+    const elapsed = time - startTime;
+    element.scrollLeft = easeInOutCubic(elapsed, start, target - start, duration);
+
+    if (elapsed < duration) {
+      requestAnimationFrame(scroll);
+    }
+  }
+
+  function easeInOutCubic(t, b, c, d) {
+    t /= d / 2;
+    if (t < 1) return c / 2 * t * t * t + b;
+    t -= 2;
+    return c / 2 * (t * t * t + 2) + b;
+  }
+
+  requestAnimationFrame(scroll);
+}    
+
+</script>
+
+
+
+
+
+{% include 'footer.html' %}
+{% endblock %}
+
+
+
+

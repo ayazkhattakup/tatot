@@ -1,0 +1,48 @@
+TATOR TOT API Docs: 
+
+
+This document is a brief summary of all the API Endpoints for our TatorTo Kids Club App. Following are some API Endpoints along with brief descriptions: 
+
+Note -:- Instead of real domain, we are going to use localhost:8000 for sake of simplicity. 
+
+Note -:- This API can only be used by the templates(html files) inside our App. Remote Origin are not allowed by us. Coz this is not a Headless CMS. In our App frontend is tightly binded to backend. Also these are just few API Endpoints of our API. Not all of them are included. Just to give a basic idea.
+
+
+
+1). Authentication: 
+
+	a). Login  
+	
+		POST :: localhost:8000/auth/login/ 
+	
+	b). Registration (sign up) 
+
+		POST :: localhost:8000/auth/login/
+
+	c). Logout 
+
+		POST :: localhost:8000/auth/logout
+
+
+2). Books App 
+
+	a). Read Book 
+
+		GET :: localhost:8000/books/read-book/id 
+		
+	b). Search Books 
+
+		GET :: localhost:8000/books/search/?q=user_query
+
+
+3). Videos App 
+
+	a). Get Video 
+
+		GET :: localhost:8000/tv/get-video/?id=video_id  (authentication required)
+
+	b). Get All Videos in a category
+
+		GET :: localhost:8000/tv/get-all-videos (authentication required) 
+
+

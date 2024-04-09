@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+<style>
+    a.book-link img {
+        width: 4rem;
+        position: fixed;
+        bottom: 13%;
+        left: 1%;
+    }
+</style>
+
+
+{% include 'videoNavbar.html' %}
+
+
+<iframe src="{{link}}" width="100%" height="100%" frameborder="0">
+</iframe>
+
+
+
+
+<script id="mark-book-as-read">
+    
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", '{% url "mark-book-read" %}?id={{id}}')
+
+    xhr.onload = function () {
+
+        console.log(xhr.response);
+    }
+    xhr.send();
+</script>
+
+
+{% endblock %}

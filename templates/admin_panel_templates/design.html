@@ -1,0 +1,89 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+{% block adminContent %}
+{% include 'admin_panel_templates/navbar.html' %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Website Design Layout</h1>
+    </div>
+    <form method="post" class="row d-flex justify-content-center mt-5 align-items-center" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" hidden value="{{layout.id}}" name="video-id">
+        <div class="col-lg-8">
+            <label for="" class="label">
+                <strong>Website Title</strong>
+            </label>
+            <div class="row">
+                <input required type="text" value="{{layout.title}}" name="title">
+            </div>
+            <div class="row mt-4 justify-content-between">
+                <div class="col-lg-5">
+                    <div class="row mb-2">
+                        <label  for=""><strong>Books Page Title</strong></label>
+                        <input required name="books_title" value="{{layout.books_title}}" type="text">
+                    </div>
+                    <div class="row mb-2">
+                        <label for=""><strong>TV Page Title</strong></label>
+                        <input type="text" name="tv_title" value="{{layout.videos_title}}">
+                    </div>
+                    <div class="row mb-4">
+                        <label for=""><strong>Books Link Image</strong></label>
+                        {% if layout.books_link_img %}
+                        <a href="{{layout.books_link_img.url}}">
+                            {{layout.books_link_img.url}}
+                        </a>
+                        {% endif %}
+                        <input {% if not layout.books_link_img %} required  {% endif %} type="file" name="book_link_img" class="form-control">
+                    </div>
+                    <div class="row mb-4">
+                        <label for=""><strong>TV Link Image</strong></label>
+                        {% if layout.videos_link_img %}
+                        <a href="{{layout.videos_link_img.url}}"> {{layout.videos_link_img.url}}
+                        </a>
+                        {% endif %}
+                        <input {% if not layout.video_link_img %} required  {% endif %}  type="file" value="" name="tv_link_img" class="form-control">
+                    </div>
+                    <div class="row mt-5">
+                        <button class="btn" style="background-color: var(--orange);color:white;font-family: Boldervan;font-size: 20px;letter-spacing: 2px;" >Save Layout</button>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-flex flex-column">
+                    <div class="row mb-4">
+                        <label for=""><strong>TatorTot Icon</strong></label>
+                        {% if layout.icon %}
+                        <a href="{{layout.icon.url}}">{{layout.icon.url}}</a>
+                        {% endif %}
+                        <input  {% if not layout.icon %} required  {% endif %}  type="file" name="website_icon" class="form-control">
+                    </div>
+                    <div class="row mb-4">
+                        <label for=""><strong>Home Page Background</strong></label>
+                        {% if layout.home_background %}
+                        <a href="{{layout.home_background.url}}">{{layout.home_background.url}}</a>
+                        {% endif %}
+                        <input {% if not layout.home_background %} required  {% endif %}  type="file" name="home_page_background" class="form-control">
+                    </div>
+                    <div class="row mb-4">
+                        <label for=""><strong>Books Page Background</strong></label>
+                        {% if layout.books_background %}
+                        <a href="{{layout.books_background.url}}">
+                            {{layout.books_background.url}}
+                        </a>
+                        {% endif %}
+                        <input {% if not layout.books_background %} required  {% endif %}  type="file" name="book_page_background" class="form-control">
+                    </div>
+                    
+                    <div class="row mb-4">
+                        <label for=""><strong>TV Page Background</strong></label>
+                        {% if layout.videos_background %}
+                        <a href="{{layout.videos_background.url}}">{{layout.videos_background.url}}</a>
+                        {% endif %}
+                        <input type="file" name="tv_page_background" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

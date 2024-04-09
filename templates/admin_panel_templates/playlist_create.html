@@ -1,0 +1,51 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+{% block adminContent %}
+{% include 'admin_panel_templates/navbar.html' %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Create Playlist</h1>
+    </div>
+    <form method="post"  class="row d-flex justify-content-center align-items-center mt-5">
+        {% csrf_token %}
+        <div class="col-lg-8">
+            <div class="row mb-3">
+                <label for=""><strong>Playlist Title</strong></label>
+                <input required type="text" name="title">
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-lg-5">
+                    <label class="mb-1" for=""><strong>Playlist Cover</strong></label>
+                    <input required type="file" name="playlist-cover" id="cover-img" class="form-control mb-5">
+                    <button style="background-color: var(--orange) ; width:100%; color:white;font-family: Boldervan;font-size: 20px;letter-spacing: 2px;" type="submit" class="btn">Create Playlist</button>
+                </div>
+                <div class="col-lg-5">
+                    <img id="up-img" src="" style="width:15rem; object-fit: cover; height:7rem; border: 1px solid var(--orange);outline:none;" alt="Playlist Cover Image">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script id="handling-uploaded-img">
+    let img_input = document.querySelector('#cover-img');
+    let imgCon = document.querySelector('#up-img');
+
+    img_input.addEventListener("change", event => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                imgCon.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+{% endblock %}

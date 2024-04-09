@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% include 'navbar.html' %}
+
+
+
+
+<h1 class="heading mt-5">BOOK CLUB 2!</h1>
+<div class="shelves">
+    {% for category in categories %}
+    <div class="shelve">
+        <img src="{% static 'images/shelf.png' %}" alt="" class="shelf-img ">
+        <div class="books">
+            <button class="left">
+                <i class="fa-solid fa-circle-left"></i>
+            </button>
+            <button class="right">
+                <i class="fa-solid fa-circle-right"></i>
+            </button>
+            {% for flipbook in flipbooks %}
+            {% if flipbook.category == category %}
+            <a href="{% url 'read-book' id=flipbook.id %}" class="book">
+                <i class="fa-solid fa-heart fav-icon" id="{{flipbook.id}}"></i>
+                <img src="{{flipbook.img.url}}" alt="" class="book-img">
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% include 'footer.html' %}
+
+
+
+<style>
+    @media screen and (min-width:790px) {
+        .left {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 25px;
+            z-index: 10000;
+            color: var(--orange);
+        }
+
+        .right {
+            position: absolute;
+            top: 50%;
+            font-size: 25px;
+            right: 0;
+            background: none;
+            border: none;
+            outline: none;
+            z-index: 10000;
+            color: var(--orange);
+        }
+    }
+
+    @media screen and (max-width:790px) {
+        .left {
+            display: none;
+        }
+
+        .right {
+            display: none;
+        }
+    }
+</style>
+
+
+<script>
+    let favouriteIcon = document.querySelectorAll('.fav-icon')
+
+    favouriteIcon.forEach(icn => {
+        icn.addEventListener("click", event => {
+            event.preventDefault();
+            console.log(icn);
+            console.log(icn.id);
+            let xhr1 = new XMLHttpRequest();
+            xhr1.open("GET", `{% url 'add-to-favourites' %}?book_id=${icn.id}`, true);
+            xhr1.onload = function () {
+                alert("This book has been added to your favourites")
+            }
+            xhr1.send();
+        })
+    })
+</script>
+
+<script>
+
+    let leftSound = new Audio('{% static "sounds/left.wav" %}')
+    let rightSound = new Audio('{% static "sounds/right.wav" %}')
+
+    let slider = document.querySelector('.books');
+
+    let leftBtns = document.querySelectorAll('.left');
+    let rightBtns = document.querySelectorAll('.right');
+    let sliderStep = 100;
+
+
+    leftBtns.forEach(leftBtn => {
+        leftBtn.addEventListener('click', () => {
+        smoothScrollTo(slider, slider.scrollLeft - sliderStep);
+        leftSound.volume = .1;
+        leftSound.play();
+    });
+    })
+
+    rightBtns.forEach(rightBtn => {
+        rightBtn.addEventListener('click', () => {
+        smoothScrollTo(slider, slider.scrollLeft + sliderStep);
+        rightSound.volume = .1;
+        rightSound.play();
+    });
+    })
+
+    function smoothScrollTo(element, target) {
+        const duration = 300;
+        const start = element.scrollLeft;
+        const startTime = performance.now();
+
+        function scroll(time) {
+            const elapsed = time - startTime;
+            element.scrollLeft = easeInOutCubic(elapsed, start, target - start, duration);
+
+            if (elapsed < duration) {
+                requestAnimationFrame(scroll);
+            };
+        }
+
+        function easeInOutCubic(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t * t + b;
+            t -= 2;
+            return c / 2 * (t * t * t + 2) + b;
+        }
+
+        requestAnimationFrame(scroll);
+    }
+
+
+</script>
+
+
+<script id="for-sound-effects">
+</script>
+
+
+{% endblock %}
+
+

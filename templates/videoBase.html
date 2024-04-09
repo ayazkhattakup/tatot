@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/18ee09c425.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+</head>
+
+
+
+<body class="video-app">
+
+    <a href="{% url 'book-home' %}" class="book-club-link">
+        <img src="{% static 'images/video_media/book-club.png' %}" alt="">
+    </a>
+
+    {% block VideoContent %}
+
+    {% endblock %}
+
+    <div class="install-modal-wrapper">
+        <div class="install-modal">
+            <div class="logo mb-3">
+                <img src="{% static 'images/logo.png' %}" width="100" alt="">
+            </div>
+            <div class="text mb-3">
+                Would you like to add TatorTot Book Club to your home screen ?
+            </div>
+            <button style="color:black;" id="install-id" class="install-btn  mb-3 mt-2">
+                <i class="fa-solid fa-download"></i>
+                Download Our App!
+            </button>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+        window['__onGCastApiAvailable'] = function(isAvailable) {
+            if (isAvailable) {
+                initializeCastApi();
+            }
+        };
+    
+        function initializeCastApi() {
+            cast.framework.CastContext.getInstance().setOptions({
+                receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+                autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+            });
+        }
+
+        function castVideo() {
+        var mediaInfo = new chrome.cast.media.MediaInfo(screen.src);
+        var request = new chrome.cast.media.LoadRequest(mediaInfo);
+
+        chrome.cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
+    }
+    </script>
+
+
+<script id="installing-tator-toe">
+
+    const previouslyLoggedIn = sessionStorage.getItem('first-time');
+
+    let deferredPrompt;
+    let installModalShowing = false;
+    let installModalWrapper = document.querySelector('.install-modal-wrapper');
+    let installModal = document.querySelector('.install-modal');
+
+    let showInstallModal = document.getElementById('show-modal');
+    showInstallModal.addEventListener("click", event => {
+
+        if (!installModalShowing) {
+            installModalWrapper.style.display = 'flex';
+            installModalShowing = true;
+        }
+    })
+
+    installModalWrapper.addEventListener("click", event => {
+        if (installModalShowing) {
+            if (event.target !== installModal && !installModal.contains(event.target)) {
+
+                installModalWrapper.style.display = 'none';
+                installModalShowing = false;
+            }
+        }
+    })
+
+    window.addEventListener("beforeinstallprompt", event => {
+        event.preventDefault();
+        deferredPrompt = event;
+    })
+
+    let installBtn = document.getElementById('install-id');
+
+    installBtn.addEventListener("click", event => {
+
+        deferredPrompt.prompt();
+    })
+
+</script>
+
+<script id="time-limit-checker-script">
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", '{% url "video-access-limit" %}' , true);
+    
+    xhr.send();
+</script>
+
+</body>
+
+</html>
