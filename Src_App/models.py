@@ -27,7 +27,7 @@ class Flipbook(models.Model):
     parental_restriction = models.BooleanField(default=False, verbose_name='This Flipbook may be inappropiate for some kids')
     views = models.IntegerField(default=0, blank=True, verbose_name='views')
     viewers = models.ManyToManyField(to=User, blank=True)
-    
+
     def __str__(self):
         return self.title
 
@@ -182,10 +182,8 @@ class Playlist(models.Model):
         return self.title
 
 class FavoritePlaylist(models.Model):
-
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, null=False, blank=False)
     songs = models.ManyToManyField(to=Song)
-
 
     def __str__(self):
 

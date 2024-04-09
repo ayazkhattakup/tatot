@@ -416,3 +416,16 @@ a.btn-prev {
     letter-spacing: 2px;
     color: white;
 }
+
+button.visit-site-btn {
+    color: white;
+    background-color: var(--orange);
+    font-size: 20px;
+    padding: .4rem 1rem;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    font-family: Bebas;
+    letter-spacing: 1.3px;
+    
+}
