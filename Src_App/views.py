@@ -113,6 +113,11 @@ def BookHomeView(request):
     user = request.user
     profile = None
 
+    if not user.is_authenticated:
+    
+        return render(request, 'index.html',)
+        
+
     if user and not user.is_superuser:
         profile = UserProfile.objects.get(user=user)
         
