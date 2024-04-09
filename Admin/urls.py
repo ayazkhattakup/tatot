@@ -30,15 +30,12 @@ urlpatterns = [
     path('course-categories/', views.course_categories, name='course-categories'),
     path('course-category/', views.course_category_details, name='course-category'),
     path('course-category-upload/', views.add_course_category, name='course-category-upload'),
-<<<<<<< HEAD
     path('song-details/', views.song_details, name='song-details'),
     path('upload-song/', views.add_song, name='upload-song'),
     path('songs/', views.songs,name='songs'),
     path('create-album/', views.create_album, name='create-album'),
     path('albums/', views.albums, name='albums'),
     path('album-details/', views.album_details, name='album-details'),
-=======
->>>>>>> origin/master
 ]
 
 
