@@ -1,6 +1,6 @@
 import os 
 from pathlib import Path
-# from decouple import config
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1vbtu(q1r@r^&(po6u)i=n_v#&gx-dwcnatyz5qwnrbfi+6@at'
@@ -89,23 +89,23 @@ WSGI_APPLICATION = 'Book_Shelves.wsgi.application'
 
 # this is for sqlite3 database 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+#}
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': config('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
-#         'NAME': config('DATABASE_NAME', default=''),
-#         'USER': config('DATABASE_USER', default=''),
-#         'PASSWORD': config('DATABASE_PASSWORD', default=''),
-#         'HOST': config('DATABASE_HOST', default=''),
-#         'PORT': config('DATABASE_PORT', default=''),
-#     }
-# }
+DATABASES = {
+     'default': {
+         'ENGINE': config('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
+         'NAME': config('DATABASE_NAME', default=''),
+         'USER': config('DATABASE_USER', default=''),
+         'PASSWORD': config('DATABASE_PASSWORD', default=''),
+         'HOST': config('DATABASE_HOST', default=''),
+         'PORT': config('DATABASE_PORT', default=''),
+     }
+ }
 
 
 AUTH_PASSWORD_VALIDATORS = [

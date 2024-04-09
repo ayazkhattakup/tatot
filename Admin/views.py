@@ -64,6 +64,10 @@ def upload_video(request):
         pass 
 
     if request.method == 'POST':
+<<<<<<< HEAD
+=======
+        print('Hello World')
+>>>>>>> origin/master
         title = request.POST.get('title')
         categorie = request.POST.get('category')
         ad_link = request.POST.get('ad_link')
@@ -788,6 +792,10 @@ def course_category_details(request):
     if request.method == 'GET':
         id = request.GET.get('id')
         if id:
+<<<<<<< HEAD
+=======
+            # print(id)
+>>>>>>> origin/master
             id = int(id)
             course_category = Course_Category.objects.get(id=id)
             context['course_category'] = course_category
@@ -834,6 +842,7 @@ def add_course_category(request):
             context['message'] = 'Something Went Wrong'
 
     return render(request, 'admin_panel_templates/create_course_category.html', context)
+<<<<<<< HEAD
 
 
 
@@ -1014,3 +1023,5 @@ def albums(request):
     return render(request, 'admin_panel_templates/albums.html',context )
 
 
+=======
+>>>>>>> origin/master

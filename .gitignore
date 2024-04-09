@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 venv/
+=======
+tatot_env/
+>>>>>>> origin/master
 .env
 *.pyc
 __pycache__/
 test/
+<<<<<<< HEAD
 tmp/
+=======
+tmp/
+**/migrations/**
+>>>>>>> origin/master
