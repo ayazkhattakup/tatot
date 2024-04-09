@@ -4,12 +4,10 @@ import requests
 import json
 from django.utils import timezone
 from django.http import HttpResponse, JsonResponse
-
 from django.shortcuts import render, redirect
 from django.conf import settings 
 from django.views import View
 from asgiref.sync import sync_to_async
-
 from .models import UserProfile,  Flipbook, Categorie, Report, User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
