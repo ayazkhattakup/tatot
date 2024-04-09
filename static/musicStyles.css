@@ -1,0 +1,604 @@
+:root {
+    --orange: #f49519;
+    --yellow: #f4e87c;
+    --blue: #cdf3f9;
+  }
+  
+  @font-face {
+    font-family: 'Boldervan';
+    src: url('BoldenVan.woff');
+  }
+  
+* {
+    margin: 0;
+    padding: 0;
+    font-family: serif;
+}
+
+body {
+    background:url('./images/bg.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.go-back-button {
+  background-color: var(--orange);
+  color: white;  
+  position: absolute;
+  top: 10%;
+  left: 2%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  text-decoration:none;
+}
+
+.go-back-button:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.music-app {
+  display: flex;
+  flex-direction: column;
+}
+
+.music-app .music-heading {
+  color: var(--orange);
+  font-family: Boldervan;
+  text-align: center;
+  margin-top: 5vh;
+  font-size: 60px;
+}
+
+@media screen and (max-width:500px ) {
+  .music-app {
+    position: absolute;  
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .music-app .music-wrapper {
+    gap: 10px;
+  }
+
+  .music-app .music-heading {
+    font-size: 30px;
+  }
+
+  .song-wrapper .song-heading {
+    font-size: 30px;
+  }
+  
+  .albums-wrapper .albums-heading {
+    font-size: 30px;
+
+  }
+
+  .music-app .music-wrapper a h1 {
+    text-wrap: nowrap;
+    font-size: 17px;
+  }
+
+  .music-app .music-wrapper a img {
+    width: 4rem;
+    height: 4rem;
+    object-fit: contain;
+  }
+}
+
+@media screen and (min-width:500px ) {
+
+  .music-app .music-wrapper {
+    gap: 10px;
+  }
+
+  .music-app .music-wrapper a h1 {
+    font-size: 22px;
+  }
+
+  .music-app .music-wrapper a img {
+    width: 8rem;
+    height: 8rem;
+    object-fit: contain;
+  }
+
+}
+
+@media screen and (min-width:801px ) {
+
+  .music-app .music-wrapper {
+    gap: 15px;
+  }
+
+  .music-app .music-wrapper a h1 {
+    font-size: 27px;
+  }
+
+  .music-app .music-wrapper a img {
+    width: 12rem;
+    height: 12rem;
+    object-fit: contain;
+  }
+
+
+
+}
+
+.music-app .music-wrapper {
+  padding: 0 5vw;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background: url('./images/music_media/bg_bar.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  justify-content: center;
+  align-items:center;
+}
+
+.music-app .music-wrapper a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  text-decoration: none;
+  justify-content: space-between;
+}
+
+
+.music-app .music-wrapper a h1 {
+  text-wrap: nowrap;
+  color: black;
+  font-family: Boldervan;
+  text-decoration: none;
+}
+
+
+
+.music-app .music-wrapper a:hover {
+  scale: 1.3;
+  transition: .4s;
+}
+
+
+/* ALBUMS PAGE STYLING  */
+
+.albums-wrapper {
+  display: flex;
+  flex-direction:column;
+  width: 100%;
+}
+
+.albums-wrapper h1.albums-heading {
+  color: var(--orange);
+  font-family: Boldervan;
+  text-align: center;
+  margin-top: 5vh;
+  font-size: 60px;
+}
+
+.albums-wrapper .albums {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background: url(./images/music_media/bg_bar.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: scroll;
+  padding: 0 3%;
+}
+
+.albums-wrapper .albums .album {
+  display: flex;
+}
+
+@media screen and (max-width:500px ) {
+  .albums-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .albums-wrapper .albums {
+    gap: 20px;
+  }
+  .albums-wrapper .albums .album img {
+    width: 6rem;
+    height: 6rem;
+    object-fit: contain;
+  }
+}
+
+@media screen and (max-width:800px ) and (min-width:501px) {
+
+  .albums-wrapper .albums {
+    gap: 40px;
+    margin-top: 10vh;
+  }
+
+  .albums-wrapper .albums .album img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: contain;
+  }
+}
+
+@media screen and (min-width:801px ) {
+
+  .albums-wrapper .albums {
+    gap: 50px;
+    margin-top: 10vh;
+    padding: 2rem;
+    background-size: 100%;
+  }
+
+  .albums-wrapper .albums .album img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: contain;
+  }
+}
+
+
+/* SONGS PAGES STYLING  */
+
+
+.songs-wrapper {
+  display: flex;
+  flex-direction:column;
+  width: 100%;
+}
+
+.songs-wrapper h1.songs-heading {
+  color: var(--orange);
+  font-family: Boldervan;
+  text-align: center;
+  margin-top: 5vh;
+  font-size: 60px;
+}
+
+.songs-wrapper .songs {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background: url(./images/music_media/bg_bar.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: scroll;
+  padding: 0 3%;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 100px;  
+}
+
+::-webkit-scrollbar:horizontal {
+  background-color: transparent;
+  width: 10px;
+  height: 12px;
+}
+
+.songs-wrapper .songs::-webkit-scrollbar-thumb {
+  background-color: var(--yellow);
+  border-radius: 30px;
+  width: 2rem;
+  height: 2px;
+}
+
+
+
+.songs-wrapper .songs .song {
+  display: flex;
+}
+
+@media screen and (max-width:500px ) {
+  .songs-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .songs-wrapper .songs {
+    gap: 20px;
+  }
+  .songs-wrapper .songs .song img {
+    width: 6rem;
+    height: 6rem;
+    object-fit: contain;
+  }
+}
+
+@media screen and (max-width:800px ) and (min-width:501px) {
+
+  .songs-wrapper .songs {
+    gap: 30px;
+    margin-top: 10vh;
+    padding: 2rem 2rem;
+  }
+
+  .songs-wrapper .songs .song img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: contain;
+  }
+}
+
+@media screen and (min-width:801px ) {
+
+  .songs-wrapper .songs {
+    gap: 30px;
+    margin-top: 10vh;
+    background-size: 100%;
+    padding: 2rem;
+  }
+
+  .song-wrapper .song {
+    margin-right: 20vh;
+  }
+
+  .songs-wrapper .songs .song img {
+    width: 10rem;
+    height: 10rem;
+    object-fit: contain;
+  }
+}
+
+
+/* SONG PAGE STYLING STARTS  */
+
+.song-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.song-wrapper .song-heading {
+  font-size: 60px;
+  font-family: Boldervan;
+  color: var(--orange);
+}
+
+
+.song-wrapper .song {
+  background: url('./images/music_media/bg_bar.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  flex-wrap: nowrap;
+}
+
+
+.song-wrapper .song .title {
+  color: black;
+  font-family: Boldervan;
+}
+
+.song-wrapper .song img {
+  object-fit: contain;
+  width: 15rem;
+}
+
+@media screen and (max-width:580px ) {
+  .song-wrapper .song img {
+    width: 10rem;
+  }
+}
+
+.song-wrapper .song-controls {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.song-wrapper .song-controls img {
+  width: 5rem;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.song-wrapper .song-controls #play-btn img {
+  width: 7rem;
+}
+
+
+.add-to-favorites {
+  position: absolute;
+  width: fit-content;
+  bottom: 8%;
+  right: 5%;
+}
+
+.add-to-favorites img {
+  width: 3rem;
+  cursor: pointer;
+}
+
+.playlist-wrapper {
+  display: flex;
+  background-color: rgba(128, 128, 128, 0.79);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.playlist-wrapper .center {
+  width: 20rem;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0px 0px 4px black;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;  
+}
+
+.playlist-wrapper .center label {
+  color: var(--orange);
+  font-family: Boldervan;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.playlist-wrapper .center button {
+  color: white;
+  background-color: var(--orange);
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-family: Boldervan;
+  margin-top: 1rem;
+}
+
+.playlist-wrapper .center button:hover {
+  box-shadow: 0px 0px 5px black;
+}
+
+.playlist-wrapper .center button:active {
+  opacity: .7;
+}
+
+/* PLAYLISTS PAGE STYLING */
+
+
+.playlists img.playlist-add {
+  width: 8rem;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0px 0px 2px black;
+}
+
+.playlists img.playlist-add:hover {
+  box-shadow: 0px 0px 4px black;
+}
+
+.playlists img.playlist-add:active {
+  opacity: .7;
+}
+
+@media screen and (max-width:800px) {
+  .playlists img.playlist-add {
+    width: 5rem;
+  }
+}
+
+@media screen and (max-width:500px) {
+  .playlists img.playlist-add {
+    width: 3rem;
+  }
+}
+
+.playlists-wrapper {
+  display: flex;
+  flex-direction:column;
+  width: 100%;
+}
+
+.playlists-wrapper .playlists-heading {
+  color: var(--orange);
+  font-family: Boldervan;
+  text-align: center;
+  margin-top: 5vh;
+  font-size: 60px;
+}
+
+.playlists-wrapper .playlists {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background: url(./images/music_media/bg_bar.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow-x: scroll;
+  padding: 0 3%;
+  align-items: center;
+  padding: 3rem;
+  gap: calc(100vw/19);
+}
+
+.playlists .playlist {
+  text-decoration: none;
+}
+
+.playlists .playlist .playlist-title {
+  color: var(--orange);
+  font-family: Boldervan;
+  text-shadow: 3px 3px 0px rgb(71, 34, 34); 
+}
+
+.playlists .playlist .playlist-title:hover {
+  scale: 1.2;
+  transition: .3s;
+}
+
+#add-playlist-wrapper {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.534);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  z-index: 10;
+  display: none;
+}
+
+#add-playlist-wrapper .center {
+  padding: 2rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px black;
+}
+
+#add-playlist-wrapper .center h3 {
+  color: var(--orange);
+  font-family: Boldervan;
+  margin-bottom: 1.8rem;
+}
+
+#add-playlist-wrapper .center button {
+  color: white;
+  background-color: var(--orange);
+  border: none;
+  outline: none;
+  border-radius: 7px;
+  padding: .3rem;
+  font-family: Boldervan;
+  margin-top: 1rem;
+}
+
+#add-playlist-wrapper .center button:hover {
+  box-shadow: 0px 0px 3px black;
+}
+
+#add-playlist-wrapper .center button:active {
+  opacity: .7;
+}
+

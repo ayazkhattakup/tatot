@@ -1,0 +1,140 @@
+{% extends 'learnAppTemplates/base.html' %}
+{% block learnContent %}
+{% load static %}
+{% include 'learnAppTemplates/navbar.html' %}
+
+<style>
+    @media screen and (min-width:790px) {
+        .left {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 25px;
+            z-index: 10000;
+            color: var(--orange);
+        }
+
+        .right {
+            position: absolute;
+            top: 50%;
+            font-size: 25px;
+            right: 0;
+            background: none;
+            border: none;
+            outline: none;
+            z-index: 10000;
+            color: var(--orange);
+        }
+    }
+
+    @media screen and (max-width:790px) {
+        .left {
+            display: none;
+        }
+
+        .right {
+            display: none;
+        }
+    }
+</style>
+
+
+<div class="container d-flex flex-column justify-content-between p-sm-5 py-5 learn-home-container">
+    <div class="row mt-3">
+        <h1 class="white-heading">
+            LEARN!
+        </h1>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-12 courses">
+            <button class="left">
+                <i class="fa-solid fa-circle-left"></i>
+            </button>
+            <button class="right">
+                <i class="fa-solid fa-circle-right"></i>
+            </button>
+            <div class="course-row">
+                {% for course in courses %}
+                <a href="{{course.link}}" target="_blank" class="course">
+                    <img src="{{course.cover.url}}" class="" alt="{{course.name}}">
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="row d-flex flex-row gap-5 align-items-center justify-content-center mt-5">
+        {% if courses.has_previous %}
+        <a style="width:fit-content;" href="{% url 'learn-home' %}?course_number={{courses.previous_page_number}}" class="button-orange">Previous Courses</a>
+        {% endif %}
+        {% if courses.has_next %}
+        <a style="width:fit-content;" href="{% url 'learn-home' %}?course_number={{courses.next_page_number}}" class="button-orange">More Courses</a>
+        {% endif %}
+    </div>
+</div>
+
+
+<script>
+
+    let leftSound = new Audio('{% static "sounds/left.wav" %}')
+    let rightSound = new Audio('{% static "sounds/right.wav" %}')
+
+    let slider = document.querySelector('.course-row');
+
+    let leftBtns = document.querySelectorAll('.left');
+    let rightBtns = document.querySelectorAll('.right');
+    let sliderStep = 300;
+
+    let pageNum = 1;
+
+    
+
+    leftBtns.forEach(leftBtn => {
+        leftBtn.addEventListener('click', () => {
+            slider = leftBtn.parentElement.querySelector('.course-row');
+        smoothScrollTo(slider, slider.scrollLeft - sliderStep);
+        leftSound.volume = .1;
+        leftSound.play();
+    });
+    })
+
+    rightBtns.forEach(rightBtn => {
+        rightBtn.addEventListener('click', () => {
+            slider = rightBtn.parentElement.querySelector('.course-row');
+        smoothScrollTo(slider, slider.scrollLeft + sliderStep);
+        rightSound.volume = .1;
+        rightSound.play();
+    });
+    })
+
+    function smoothScrollTo(element, target) {
+        const duration = 300;
+        const start = element.scrollLeft;
+        const startTime = performance.now();
+
+        function scroll(time) {
+            const elapsed = time - startTime;
+            element.scrollLeft = easeInOutCubic(elapsed, start, target - start, duration);
+
+            if (elapsed < duration) {
+                requestAnimationFrame(scroll);
+            }
+        }
+
+        function easeInOutCubic(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t * t + b;
+            t -= 2;
+            return c / 2 * (t * t * t + 2) + b;
+        }
+
+        requestAnimationFrame(scroll);
+    }
+
+
+</script>
+
+
+{% endblock %}

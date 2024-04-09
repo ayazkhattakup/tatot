@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'musicStyles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Music | TatorTot Kids Club</title>
+</head>
+<body>
+
+    {% if request.path != '/music/' %}
+    <a href="javascript:history.go(-1)" class="go-back-button">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    {% endif %}
+
+    {% include 'musicAppTemplates/navbar.html' %}
+
+    {% block musicBlock %}
+
+    {% endblock %}
+
+
+    <div class="other-links">
+        <button id="open-btn">
+            <img src="{% static 'images/open.png' %}" alt="To open up link images">
+        </button>
+
+        <div class="links">
+            <a class="other-link" href="{% url 'video-home' %}"><img src="{% static 'images/navs/tv.png' %}" alt=""></a>
+            <a class="other-link" href="#"><img src="{% static 'images/navs/cool.png' %}" alt=""></a>
+            <a class="other-link" href="{% url 'book-home' %}"><img src="{% static 'images/navs/books.png' %}" alt=""></a>
+            <a class="other-link" href="#"><img src="{% static 'images/navs/games.png' %}" alt=""></a>
+            <a class="other-link" href="{% url 'learn-home' %}"><img src="{% static 'images/navs/learn.png' %}" alt=""></a>
+        </div>
+    </div>
+
+    <div class="install-modal-wrapper">
+        <div class="install-modal">
+            <div class="logo mb-3">
+                <img src="{% static 'images/logo.png' %}" width="100" alt="">
+            </div>
+            <div class="text mb-3">
+                Would you like to add TatorTot Book Club to your home screen ?
+            </div>
+            <button style="color:black;" id="install-id" class="install-btn  mb-3 mt-2">
+                <i class="fa-solid fa-download"></i>
+                Download Now!
+            </button>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/18ee09c425.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
+
+    <script id="time-limit-checker-script">
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", '{% url "access-limit" %}', true);
+
+        xhr.send();
+    </script>
+
+
+    <script id="for-other-links">
+        let links = document.querySelector('.links');
+        let openBtn = document.querySelector('#open-btn');
+        let otherLinksAnchors = document.querySelectorAll('.other-links')
+        let opened = false;
+
+        openBtn.addEventListener("click", event => {
+
+            if (!opened) {
+                event.target.transition = '1s';
+                links.style.transition = '1s';
+                links.style.opacity = '1';
+                links.style.zIndex = '10';
+                event.target.style.rotate = '180deg';
+                opened = true;
+            } else if(opened) {
+                links.style.transition = '1s';
+                links.style.opacity = '0';
+                links.style.zIndex = '-1';
+                event.target.style.rotate = '360deg';
+                opened = false;
+            }
+        })
+    </script>
+
+
+
+    <script id="installing-tator-toe">
+
+        const previouslyLoggedIn = sessionStorage.getItem('first-time');
+
+        let deferredPrompt;
+        let installModalShowing = false;
+        let installModalWrapper = document.querySelector('.install-modal-wrapper');
+        let installModal = document.querySelector('.install-modal');
+
+        let showInstallModal = document.getElementById('show-modal');
+        showInstallModal.addEventListener("click", event => {
+
+            if (!installModalShowing) {
+                installModalWrapper.style.display = 'flex';
+                installModalShowing = true;
+            }
+        })
+
+        installModalWrapper.addEventListener("click", event => {
+            if (installModalShowing) {
+                if (event.target !== installModal && !installModal.contains(event.target)) {
+
+                    installModalWrapper.style.display = 'none';
+                    installModalShowing = false;
+                }
+            }
+        })
+
+        window.addEventListener("beforeinstallprompt", event => {
+            event.preventDefault();
+            deferredPrompt = event;
+        })
+
+        let installBtn = document.getElementById('install-id');
+
+        installBtn.addEventListener("click", event => {
+
+            deferredPrompt.prompt();
+        })
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+
+{% block adminContent %}
+{% include 'admin_panel_templates/navbar.html' %}
+{% load static %}
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Report Details</h1>
+    </div>
+    <div class="row d-flex flex-column mt-5 justify-content-center align-items-center">
+        <div class="col-lg-8 mb-2 d-flex align-items-center gap-3 justify-content-center">
+            <h4 style="width:fit-content;"><strong>ID</strong></h4>
+            <h4 style="background-color: var(--orange);width:fit-content;padding: .3rem .6rem;color:white;">{{report.id}}</h4>
+        </div>
+        <div class="col-lg-8">
+            <div class="row d-flex flex-column">
+                <label for=""><strong>Report Title</strong></label>
+                <input type="text" width="100%" value="{{report.title}}">
+            </div>
+            <div class="row d-flex justify-content-between flex-row mt-5">
+                <div class="col-lg-4">
+                    <label for=""><strong>Reported By <a style="color:var(--orange)" href="">User</a></strong></label>
+                </div>
+                <div class="col-lg-4">
+                    <label for=""><strong>Reported On <span style="color:var(--orange);">{{report.reported_on}}</span></strong></label>
+                </div>
+            </div>
+            <div class="row d-flex flex-column mt-5">
+                <label for=""><strong>Report Statement</strong></label>
+                <textarea name="" id="" style="width:100%;padding:.5rem;resize: none;" rows="10">{{report.content}}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

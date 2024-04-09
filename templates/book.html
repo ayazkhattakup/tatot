@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+
+<div class="flipbook-wrapper">
+    <div class="container">
+        <div class="row d-flex flex-wrap flex-row flipbook">
+            <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center cover-img">
+                <img src="{{flipbook.img.url}}" class="img-fluid" alt="">
+            </div>
+            <div class="col-lg-6 d-flex flex-column justify-content-start  book-desc">
+                <div class="title mb-4">
+                    <h2 class="book-title">{{flipbook.title}}</h2>
+                </div>
+                <span class="category mb-4">Category : <span class="cate">{{flipbook.category}}</span></span>
+                <p class="desc mb-4">
+                    {{flipbook.overview}}
+                </p>
+                <input type="text" hidden id="book-id" value="{{flipbook.id}}">
+                <div class="btns  d-flex flex-row mt-2">
+                    <a href="/read-book/{{flipbook.id}}" class="read-btn mx-2">Read Book <i class="fa-brands fa-readme"></i> </a>
+                    <a href="#" id="report-btn" class="download-btn">Report <i class="fa-regular fa-flag"></i></a>
+                </div>
+                <div class="btns">
+                <a href="/add-to-favourites/" id="fav-btn" class="add-to-fav mt-4 gap-1">Add To Favourites <i class="fa-regular fa-heart"></i> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="report-modal-wrapper">
+    <div class="report-modal d-flex flex-column">
+        <i class="fa-regular fa-flag rep"></i>
+        <div class="row">
+            <h5 class="exp">Tell us your issue</h5>
+        </div>
+        <div class="row">
+            <textarea name="" placeholder="write here..." id="report-content" cols="30" rows="10"></textarea>
+        </div>
+        <button id="submit-report">Submit Report</button>
+    </div>
+</div>
+
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 2f2fae777ccb77a0b07e9c819b8663d072bf1adf
+{% include 'footer.html' %}
+
+
+
+<script id="marking-favourite">
+    let BID = document.getElementById('book-id').value;
+    let favBtn = document.getElementById('fav-btn');
+
+    favBtn.addEventListener("click", event => {
+        event.preventDefault();
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", `/add-to-favourites/?book_id=${BID}`, true);
+
+        xhr.onload = function() {
+
+            console.log(xhr.response);
+        }
+        xhr.send();
+    })
+</script>
+
+
+<script id="for-report-modal">
+    let bookId = document.getElementById('book-id').value;
+    let reportBtn = document.getElementById('report-btn');
+    let reportModalWrapper = document.querySelector('.report-modal-wrapper');
+    let reportModal = document.querySelector('.report-modal');
+    let reportContentInput = document.getElementById('report-content');
+    console.log(reportContentInput.value);
+
+    let reportSubmitBtn = document.getElementById('submit-report');
+
+    let showing = false ;
+
+    reportBtn.addEventListener("click", event => {
+        event.preventDefault();
+        reportModalWrapper.style.display = 'flex';
+        showing = true ;
+    })
+
+    reportModalWrapper.addEventListener("click", event => {
+    if (showing) {
+        if (event.target !== reportModal && !reportModal.contains(event.target)) {
+            
+            reportModalWrapper.style.display = 'none';
+        }
+        
+    }
+});
+
+reportSubmitBtn.addEventListener("click", event => {
+    event.preventDefault(); 
+
+    let csrfToken = "{{csrf_token}}";
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("POST", '/report/', true);
+
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+    xhr.setRequestHeader('X-CSRFToken', csrfToken);
+
+    xhr.onload = function () {
+        if (xhr.status >= 200 && xhr.status < 300) {
+
+            console.log('Report submitted successfully.');
+            reportModalWrapper.style.display = 'none';
+            alert("Your report has been submitted. We will look into it as soon as possible.")
+        } else {
+
+            reportModal.style.display = 'none';
+            console.log('Error submitting report.');
+        }
+    }
+
+    console.log(reportContentInput.input);
+
+    let data = "report_content=" + encodeURIComponent(reportContentInput.value) + "&book_id=" + encodeURIComponent(bookId);
+
+    xhr.send(data);
+})
+
+    
+</script>
+
+
+{% endblock %}

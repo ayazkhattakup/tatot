@@ -1,0 +1,19 @@
+{% extends 'musicAppTemplates/base.html' %}
+
+{% load static %}
+{% block musicBlock %}
+
+<div class="albums-wrapper">
+    <h1 class="albums-heading">
+        Albums
+    </h1>
+    <div class="albums">
+        {% for album in albums %}
+        <a href="{% url 'album-songs' %}?album-id={{album.id}}" class="album">
+            <img src="{{album.cover.url}}" alt="">
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

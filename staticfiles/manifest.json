@@ -1,0 +1,21 @@
+{
+    "name": "TaterTot Books Club",
+    "short_name": "TaterTot Books Club",
+    "start_url": ".",
+    "description":"This a greate platform for kids.",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+<<<<<<< HEAD
+        "src": "./images/icon.png",
+=======
+        "src": "/media/icon.png",
+>>>>>>> 2f2fae777ccb77a0b07e9c819b8663d072bf1adf
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+  }
+  

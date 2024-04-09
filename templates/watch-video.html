@@ -1,0 +1,32 @@
+{% extends 'videoBase.html' %}
+
+
+{% block VideoContent %}
+
+{% include 'videoNavbar.html' %}
+
+<style>
+    .watch-wrapper {
+        height:calc(100vh - 4rem);
+    }
+    .watch-wrapper .container {
+        height: 100%;
+    }
+    .watch-wrapper .container .row video {
+        width: fit-content;
+        height: fit-content;
+        padding: 0;
+        max-height: 60vh;
+        border: 10px solid var(--orange);
+    }
+</style>
+
+<div class="watch-wrapper">
+    <div class="container">
+        <div class="row justify-content-around align-items-center" style="height:100%;">
+            <video autoplay controls src="{% if video.video_file %} {{video.video_file.url}} {% else %} {{video.adilio_link}} {% endif %}"></video>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

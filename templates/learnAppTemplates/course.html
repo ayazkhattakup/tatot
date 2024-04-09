@@ -1,0 +1,18 @@
+{% extends 'learnAppTemplates/home.html' %}
+
+{% block learnContent %}
+{% load static %}
+{% include 'learnAppTemplates/navbar.html' %}
+
+<iframe src="https://www.upwiththebirdsent.com/l/learn/8-pillars-of-tatertot-module_337884/" width="100%" class="frame" style="height:calc(100vh - 4rem );" frameborder="0"></iframe>
+
+
+
+<script>
+
+    console.log(document.querySelector('.frame').getAttribute('src'));
+
+</script>
+
+
+{% endblock %}

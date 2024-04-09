@@ -1,0 +1,155 @@
+{% extends 'musicAppTemplates/base.html' %} 
+{% load static %} 
+{% block musicBlock %}
+
+<div class="playlist-wrapper">
+  <div class="center">
+    <label for="">Select a Playlist</label>
+    <select class="form-control" name="playlist" id="playlist-input">
+      {% for playlist in playlists %}
+      <option value="{{playlist.id}}">{{playlist.title}}</option>
+      {% endfor %}
+    </select>
+    <button id="add-to-playlist-btn">Add To Playlist</button>
+  </div>
+</div>
+
+<div class="add-to-favorites">
+  <img
+    onclick="addFavoriteSong()"
+    src="{% static 'images/favorites.png' %}"
+    alt=""
+  />
+  <button id="add-to-playlist">+</button>
+</div>
+
+<div class="song-wrapper">
+  <h1 class="song-heading">TaterTot</h1>
+  <div class="song d-flex gap-5">
+    <img src="{{song.cover.url}}" alt="" />
+    <div class="song-details">
+      <h1 class="title">{{song.title}}</h1>
+    </div>
+  </div>
+  <audio hidden class="mb-3" id="audio" controls>
+    <source src="{{song.music_file.url}}" type="audio/mp3" />
+    Your browser does not support the audio element.
+  </audio>
+  <div class="song-controls">
+    <img id="prev-song-btn" src="{% static 'images/prev_btn.png' %}" alt="" />
+    <div id="play-btn">
+      <img src="{% static 'images/play_btn.png' %}" alt="" />
+    </div>
+    <img id="next-song-btn" src="{% static 'images/next_btn.png' %}" alt="" />
+    <div id="vol-btn">
+      <img src="{% static 'images/vol_btn.png' %}" alt="" />
+    </div>
+  </div>
+</div>
+
+<script id="hide-show-playlist-wrapper">
+  document.addEventListener("DOMContentLoaded", function () {
+    let showingPlaylistWrapper = false;
+    let playlistsBtn = document.getElementById("add-to-playlist");
+    let playlistsWrapper = document.querySelector(".playlist-wrapper");
+
+    playlistsBtn.addEventListener("click", (e) => {
+      playlistsWrapper.style.display = "flex";
+      showingPlaylistWrapper = true;
+    });
+
+    playlistsWrapper.addEventListener("click", function (event) {
+      if (showingPlaylistWrapper) {
+        let centerElement = document.querySelector(".center");
+        if (
+          event.target !== centerElement &&
+          !centerElement.contains(event.target)
+        ) {
+          playlistsWrapper.style.display = "none";
+          showingPlaylistWrapper = false;
+        }
+      }
+    });
+  });
+</script>
+
+<script>
+    let addToPlaylistBtn = document.getElementById('add-to-playlist-btn');
+    let playlistInput = document.getElementById('playlist-input');
+    const csrf_token = "{{csrf_token}}"
+    const song_id = "{{song.id}}"
+    addToPlaylistBtn.addEventListener('click', async e => {
+        let playlistId = playlistInput.value;
+
+        if (playlistInput.value !== null ) {
+            const response = await fetch(`{% url 'add-to-playlist' %}`, {
+                method:'POST',
+                headers: {
+                    'X-CSRFToken': csrf_token,
+                },
+                body: JSON.stringify({playlist_id:playlistInput.value, song_id:song_id})
+            })
+            const data = await response.json()    
+
+            if (response.status === 200) {
+              document.querySelector('.playlist-wrapper').style.display = 'none';
+
+            }
+        }
+    })
+</script>
+
+<script>
+  let soundBtn = document.getElementById("vol-btn");
+  let nextBtn = document.getElementById("next-song-btn");
+  let prevBtn = document.getElementById("prev-song-btn");
+  let playBtn = document.getElementById("play-btn");
+  let song = document.getElementById("audio");
+  let paused = true;
+  let muted = false;
+
+  playBtn.addEventListener("click", (e) => {
+    if (song.paused) {
+      song.play();
+      playBtn.innerHTML = `<img src="{% static 'images/music_media/pause.png' %}" alt="">`;
+    } else {
+      song.pause();
+      playBtn.innerHTML = `<img src="{% static 'images/play_btn.png' %}" alt="">`;
+    }
+  });
+
+  soundBtn.addEventListener("click", (e) => {
+    if (song.muted) {
+      song.muted = false;
+      soundBtn.innerHTML = `<img src="{% static 'images/vol_btn.png' %}" alt="">`;
+    } else {
+      song.muted = true;
+      soundBtn.innerHTML = `<img src="{% static 'images/music_media/mute.png' %}" alt="">`;
+    }
+  });
+
+  nextBtn.addEventListener("click", (e) => {
+    window.location.href = `{% url 'song' %}?song-id=${`{{next_song.id}}`}`;
+  });
+
+  prevBtn.addEventListener("click", (e) => {
+    window.location.href = `{% url 'song' %}?song-id=${`{{next_song.id}}`}`;
+  });
+
+  function addFavoriteSong(e) {
+    let id = "{{song.id}}";
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET", `{% url 'add-favorite-song' %}?id=${`{{song.id}}`}`, true);
+
+    xhr.onload = function () {
+      let data = xhr.response;
+      data = JSON.parse(data);
+      let message = data["message"];
+      alert(message);
+    };
+
+    xhr.send();
+  }
+</script>
+
+{% endblock %}

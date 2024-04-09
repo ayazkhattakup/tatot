@@ -1,0 +1,77 @@
+{% load static %}
+<div class="video-navbar">
+    <div class="left-side">
+        <a href="{% url 'video-home' %}">
+            <img class="icon" src="{% static 'images/logo.png' %}" alt="">
+        </a>
+        <button id="show-modal" class="download">
+            <img class="download-img" src="{% static 'images/video_media/download-btn.png' %}" alt="">
+        </button>
+        <a href="{% url 'settings' %}" style="font-family:Boldervan;" class="parents-btn">
+            Parents <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="right-side">
+        <a href="{% url 'favorite-videos' %}">
+            <i class="fa-regular fa-heart"></i>
+        </a>
+        <form class="search-form" method="get" action="{% url 'search-video' %}">
+            <button id="voice-search" type="button" style="background-color: var(--yellow);border: none;outline: none;font-family:Boldervan;" class="btn mx-3 btn-info"><i class="fa-solid fa-microphone"></i> Voice</button>
+            <input type="text"  name="q" class="search-input">
+            <button type="submit" style="display:none;" class="search-submit"></button>
+        </form>
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <img id="casting-btn" src="{% static 'images/video_media/casting.png' %}" alt="">
+    </div>
+</div>
+
+<script>
+    
+    let searchIcon = document.querySelector('.fa-magnifying-glass');
+    let searchForm = document.querySelector('.search-form');
+    let searchInput = document.querySelector('.search-input');
+    
+    searchForm.style.display = 'none';
+    
+    hidden = true;
+    let searchEvent = new Event('submit');
+    searchIcon.addEventListener("click", event => {
+        if (hidden) {
+            hidden = false;
+            searchForm.style.display = 'flex';
+        } else {
+            submitSearch = document.querySelector('.search-submit')
+            submitSearch.click();
+        }
+    })
+
+
+</script>
+
+
+
+
+<script id="voice-search">
+    let voiceSearchBtn = document.getElementById('voice-search');
+
+    let recognition = new webkitSpeechRecognition();
+
+    recognition.onresult = function(event) {
+        let transcript = event.results[0][0].transcript;
+        searchInput.value = transcript;        
+        console.log(transcript);
+    }
+
+    recognition.onstart = function() {
+        voiceSearchBtn.innerHTML = '<i class="fa-solid fa-ear-listen"></i>  Listening...'
+    }
+    recognition.onend = function() {
+        voiceSearchBtn.innerHTML = ' <i class="fa-solid fa-microphone"></i> Voice';
+    }
+
+    voiceSearchBtn.addEventListener("click", event => {
+        recognition.start();
+    })
+    
+</script>

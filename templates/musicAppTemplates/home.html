@@ -1,0 +1,29 @@
+{% extends 'musicAppTemplates/base.html' %}
+
+{% load static %}
+{% block musicBlock %}
+    
+    <div class="music-app">
+        <h1 class="music-heading">TaterTot!</h1>
+
+        <div class="music-wrapper">
+            <a href="{% url 'all-songs' %}">
+                <img src="{% static '/images/music_media/all_music_img.png' %}" alt="" class="category-img img-fluid">
+                <h1>ALL MUSIC</h1>
+            </a>
+            <a href="{% url 'favorite-songs' %}">
+                <img src="{% static '/images/favorites.png' %}" alt="" class="category-img img-fluid">
+                <h1>MY FAVORITES</h1>
+            </a>
+            <a href="{% url 'albums' %}">
+                <img src="{% static '/images/music_media/album.png' %}" alt="" class="category-img img-fluid">
+                <h1>ALBUMS</h1>
+            </a>
+            <a href="{% url 'my-playlists' %}">
+                <img src="{% static '/images/music_media/playlist.png' %}" alt="" class="category-img img-fluid">
+                <h1>PLAYLISTS</h1>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

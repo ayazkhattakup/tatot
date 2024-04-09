@@ -1,0 +1,78 @@
+{% extends 'musicAppTemplates/base.html' %} 
+{% load static %} 
+{% block musicBlock %}
+
+
+
+<div id="add-playlist-wrapper">
+    <div class="center">
+        <h3>Create Playlist</h3>        
+        <input id="playlist-input-id" placeholder="Playlist Title" type="text" class="form-control">
+        <button id="create-playlist-btn">Create Playlist</button>
+    </div>
+    
+</div>
+
+
+<div class="playlists-wrapper">
+    <h1 class="playlists-heading">
+        My Playlists
+    </h1>
+    <div class="playlists">
+        <img class="playlist-add" src="{% static 'images/music_media/playlist_add.png' %}" alt="add to playlist button">
+        {% for playlist in playlists %}
+        <a href="{% url 'my-playlist-songs' %}?playlist-id={{playlist.id}}" class="playlist">
+            <h1 class="playlist-title">{{playlist.title}}</h1>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<script id="for-Playlist-Wrapper">
+
+    let playlistBtn = document.querySelector('.playlist-add');
+    let playlistWrapper = document.getElementById('add-playlist-wrapper');
+    let showingPlaylistWrapper = false;
+
+    playlistBtn.addEventListener("click", e => {
+        playlistWrapper.style.display = 'flex';
+        showingPlaylistWrapper = true;                
+    })
+
+    playlistWrapper.addEventListener("click", function (event) {
+      if (showingPlaylistWrapper) {
+        let centerElement = document.querySelector(".center");
+        if (
+          event.target !== centerElement &&
+          !centerElement.contains(event.target)
+        ) {
+          playlistWrapper.style.display = "none";
+          showingPlaylistWrapper = false;
+        }
+      }
+    });
+    
+</script>
+
+<script id="handle-create-playlist">
+
+    let createPlaylistBtn = document.getElementById('create-playlist-btn');
+
+    createPlaylistBtn.addEventListener("click", event => {
+        let playlistName = document.getElementById('playlist-input-id').value;
+        
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("GET", `{% url "create-my-playlist" %}?playlist-name=${playlistName}`, true);
+        xhr.onload = function(){
+            let data = xhr.response;
+            
+            playlistWrapper.style.display = 'none';
+            showingPlaylistWrapper = false;
+        }
+
+        xhr.send();
+    })
+</script>
+
+{% endblock %}

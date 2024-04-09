@@ -1,0 +1,60 @@
+{% extends 'admin_panel_templates/admin_base.html' %}
+
+{% block adminContent %}
+{% include 'admin_panel_templates/navbar.html' %}
+{% load static %}
+
+
+<div class="container">
+    <div class="row">
+        <h1 class="home-title mt-5">Change Course Details</h1>
+    </div>
+
+    <form method="post" class="row d-flex justify-content-center mt-5 align-items-center" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" hidden value="{{course.id}}" name="course-id">
+        <div class="col-lg-8 mb-2 d-flex align-items-center gap-3 justify-content-center">
+            <h4 style="width:fit-content;"><strong>ID</strong></h4>
+            <h4 style="background-color: var(--orange);width:fit-content;padding: .3rem .6rem;color:white;">{{course.id}}</h4>
+        </div>
+        <div class="col-lg-8">
+            <label for="" class="label">
+                <strong>Course Title</strong>
+            </label>
+            <div class="row">
+                <input required type="text" value="{{course.name}}" name="title">
+            </div>
+            <div class="row mt-4 justify-content-between">
+                <div class="col-lg-5">
+                    <div class="row mb-4">
+                        <label for="playlist"><strong>Change Bookshelf</strong></label>
+                        <select required name="category" id="playlist">
+                            <option value="{{course.category.id}}">{{course.category}}</option>
+                            {% for categorie in categories %}
+                                <option value="{{categorie.id}}">{{categorie.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="row mb-2">
+                        <label for=""><strong>Course Link</strong></label>
+                        <input required name="link" value="{{course.link}}" type="text">
+                    </div>
+                    <div class="row mt-5">
+                        <button class="btn" style="background-color: var(--orange);color:white;font-family: Boldervan;font-size: 20px;letter-spacing: 2px;" >Update Course</button>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-flex flex-column">
+                    <div class="row mb-4">
+                        <label for=""><strong>Cover Photo</strong></label>
+                        <a href="{% if course.img %} {{course.cover.url}} {% endif %}" class="mb-4">
+                            <img src="{% if course.cover %} {{course.cover.url}} {% endif %}" width="200" alt="">
+                        </a>
+                        <input type="file" name="cover-img" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

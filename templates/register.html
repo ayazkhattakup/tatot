@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% load static %}
+
+<div class="container mt-5 login-container">
+    <div class="row d-flex mt-5 flex-row justify-content-center align-items-center">
+        <div class="col-lg-5 form">
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <h2 class="l-heading" style="font-family:Boldervan;">
+                    <img src="{% static 'images/logo.png' %}" width="200" alt="logo"> Sign Up
+                </h2>
+                {% if message %}
+                    <span class="error text-danger">{{message}}</span>
+                {% endif %}
+                <div class="form-outline mb-4">
+                  <input type="text" required name="first-name" id="form2Example1" class="form-control" />
+                  <label class="form-label" for="form2Example1">First Name </label>
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="text" required name="last-name" id="form2Example12" class="form-control" />
+                  <label class="form-label" for="form2Example1">Last Name</label>
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="email" required name="email" id="form2Example13" class="form-control" />
+                  <label class="form-label" for="form2Example1">Email address</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input name="password" required type="password" id="form2Example2" class="form-control" />
+                  <label class="form-label" for="form2Example2">Password</label>
+                </div>
+
+                <button type="submit" class="sign-in-btn">Sign Up</button>
+
+                <div class="form-outline mt-3 d-flex flex-column align-items-center justify-content-center">
+                    Already a member ? 
+                    <a class="anc" href="{% url 'login' %}" style="display:inline;"> Login</a>
+                </div>     
+              </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    let firstInput = document.querySelectorAll('#form2Example1')[0];
+    firstInput.focus();
+
+</script>
+
+
+{% endblock %}
