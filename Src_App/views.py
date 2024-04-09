@@ -44,7 +44,6 @@ def provide_layout_structure(request):
     return JsonResponse(context, safe=False)
 
 
-@login_required(login_url='login')
 def time_limit_checker(request):
 
     profile = UserProfile.objects.get(user=request.user)
@@ -69,7 +68,6 @@ def time_limit_checker(request):
     return JsonResponse({"Message":'I have got your request for this'})
 
 
-@login_required(login_url='login')
 def time_limit_video_checker(request):
 
     profile = UserProfile.objects.get(user=request.user)
@@ -94,9 +92,11 @@ def time_limit_video_checker(request):
     return JsonResponse({"Message":'I have got your request for this'})
 
 
-@login_required(login_url='login')
+
 def Index(request):
     user = request.user
+    if not user.is_authenticated:
+        return redirect('login')
     if user and not user.is_superuser:
         profile = UserProfile.objects.get(user=user)
         
