@@ -59,7 +59,7 @@ class VideoCategorie(models.Model):
 
 class Video(models.Model):
     title = models.CharField(max_length=300, verbose_name='Video Title')
-    description = models.TextField(default="")
+    description = models.TextField(default="", blank=True, null=True)
     status = models.CharField(max_length=2000, default='')
     category = models.ForeignKey(to=VideoCategorie, default=None, null=False, verbose_name='Video Category', on_delete=models.CASCADE)
     adilio_link = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Adilio Link')
