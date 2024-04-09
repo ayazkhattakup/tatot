@@ -417,7 +417,7 @@ a.btn-prev {
     color: white;
 }
 
-button.visit-site-btn {
+a.visit-site-btn {
     color: white;
     background-color: var(--orange);
     font-size: 20px;
