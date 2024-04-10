@@ -5,7 +5,7 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1vbtu(q1r@r^&(po6u)i=n_v#&gx-dwcnatyz5qwnrbfi+6@at'
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [ '201f-2401-ba80-a122-5312-8de0-93f0-bad7-ca8a.ngrok-free.app', 'www.154.56.46.55', '154.56.46.55', 'member.tatertotkidsclub.app' , 'localhost' , 'www.tatertotkidsclub.app', 'books.tatertotkidsclub.app', 'tv.tatertotkidsclub.app', 'learn.tatertotkidsclub.app', 'tatertotkidsclub.app','member.201f-2401-ba80-a122-5312-8de0-93f0-bad7-ca8a.ngrok-free.app', '3.139.235.61']
 
