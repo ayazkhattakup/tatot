@@ -417,7 +417,7 @@ a.btn-prev {
     color: white;
 }
 
-button.visit-site-btn {
+a.visit-site-btn {
     color: white;
     background-color: var(--orange);
     font-size: 20px;
@@ -427,5 +427,7 @@ button.visit-site-btn {
     outline: none;
     font-family: Bebas;
     letter-spacing: 1.3px;
-    
+    position: absolute;
+    top: 2%;
+    left: 7%;
 }
