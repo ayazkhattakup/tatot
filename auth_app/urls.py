@@ -15,4 +15,6 @@ urlpatterns = [
     path('admin-login/', views.admin_login, name='admin_login'),
     path('subscription/', views.subscription, name='subscription-page'),
     path('times-up/', views.times_up, name='times-up'),
+    path('music-subscription/', views.music_subscription, name='music-subscription'),
+    path('change-password/', views.change_password, name='change-pass'),
 ]

@@ -54,32 +54,30 @@ def set_password(request):
 
 @csrf_exempt
 def thrive_cart_webhook(request):
-    print('First step it is')
-    message = None 
+    message = None
     if request.method == 'POST' or request.method == 'HEAD':
-        print("There is something happening to me.")
         try:
             payload = json.loads(request.body)
-
+            base_product_name = payload.get('base_product_name')
             if payload['event'] == 'order.success':
                 customer_email = payload.get('customer').get('email')
-
                 user = User.objects.get(email=customer_email)
-                # print(user)
                 if user:
                     user_profile = UserProfile.objects.get(user=user)
-                    # print(user_profile)
-                    if user_profile:
-                        user_profile.has_subscription = True 
-                        user_profile.subscribed_on = datetime.now()
-                        user_profile.save()
-                        return JsonResponse({"mes": "Successfully Got it"}, status=200)
-                        
-                        # print('Everything Okay.')
+                    if base_product_name == 'TaterTot Kids Club Membership':
+                        if user_profile:
+                            user_profile.has_subscription = True 
+                            user_profile.subscribed_on = datetime.now()
+                            user_profile.save()
+                            return JsonResponse({"mes": "Successfully Got it"}, status=200)
+                    elif base_product_name == 'Music App Subscription':
+                        if user_profile:
+                            user_profile.has_music_subscription = True
+                            user_profile.music_subscribed_on = datetime.now()
+                            user_profile.save() 
+                            return JsonResponse({"mes": "Successfully Got it"}, status=200)
         except Exception as e: 
             message = "An error occured"
-            print(f"Error decoding JSON: {e}")
-
     return JsonResponse({"mes": message }, status=200)
 
 
@@ -115,3 +113,28 @@ def times_up(request):
 
     context = {}
     return render(request, 'timesUp.html', context)
+
+
+def music_subscription(request):
+
+    return render(request, 'musicAppTemplates/music_subscription.html')
+
+
+def change_password(request):
+    message = None
+    response_status = None 
+    try:
+        request_body = json.loads(request.body) 
+        user = request.user
+        user = User.objects.get(id=int(user.id))
+        new_password = request_body.get('password')
+        response_status = 200
+        if new_password is not None:
+            user.password = new_password 
+            user.save()
+    except Exception as e:
+        print(e)
+        message = e
+        response_status = 500
+
+    return JsonResponse({'message':message}, status=response_status)

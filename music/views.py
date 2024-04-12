@@ -1,12 +1,24 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from Src_App.models import * 
 from django.http import JsonResponse, HttpResponse
 import json 
 
 
 def home(request):
-    context = {}
+    try:
 
+        context = {}
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+        else:
+            print('User is Admin')
+    except Exception as e:
+        print(e)
     return render(request, 'musicAppTemplates/home.html', context)
 
 def albums(request):

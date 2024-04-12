@@ -140,6 +140,8 @@ class UserProfile(models.Model):
     favourite_videos = models.ManyToManyField(to=Video, verbose_name='Favorite Videos', blank=True)
     favorite_courses = models.ManyToManyField(to=Course, verbose_name='Favorite_Courses')
     has_subscription = models.BooleanField(default=False, verbose_name='User has TatorTot Subscription', blank=True)
+    has_music_subscription = models.BooleanField(default=False, verbose_name='User has Music Subscription', blank=True)
+    music_subscribed_on = models.DateTimeField(blank=True, null=True)
     logged_in_to = models.IntegerField(default=0, null=False, verbose_name='Logged In to devices', blank=True) 
     setting_access_code = models.CharField(max_length=500, null=True, verbose_name='Settings Access Code', blank=True)
     allowed_for_books = models.BooleanField(default=True, null=True)

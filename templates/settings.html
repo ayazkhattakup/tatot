@@ -93,6 +93,9 @@
                         </datalist>
                         <label class="form-label" for="form2Example2">Videos Usage ( <span id="count">{{profile.videos_usage_limit}}</span> minutes...)<label>
                     </div>
+                    <div>
+                        <div id="change-pass-btn" style="color:white; width:fit-content; background-color: var(--yellow); border:none; outline:none; margin-bottom:3rem; cursor: pointer; padding: .5rem 1rem; border-radius: 20px;">Change password</div>
+                    </div>
                     <div class="form-outline">
                         <button class="s-btn" type="submit">Save Settings</button>
                     </div>
@@ -240,5 +243,24 @@ console.log(answer);
         videosrangeDiv.innerText = event.target.value;
     })
 </script>
+
+
+<script id="change-password">
+    let changePassBtn = document.getElementById('change-pass-btn');
+    
+    changePassBtn.addEventListener('click', event => {
+        event.preventDefault();
+        const csrf = '{% csrf_token %}'
+        const response = fetch(`{% url 'change-pass' %}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken' : csrf,
+            }
+        })
+    })
+</script>
+
+
 {% include 'footer.html' %}
 {% endblock %}
