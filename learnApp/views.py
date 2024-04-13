@@ -5,11 +5,10 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 
-
-
-@login_required(login_url='login')
 def home(request):
-
+    user = request.user 
+    if not user.is_authenticated:
+        return redirect('login')
     context = {}
     if len(Course.objects.all()) >= 3:        
         courses = Course.objects.all()
@@ -29,9 +28,11 @@ def home(request):
     return render(request, 'learnAppTemplates/home.html', context)
 
 
-@login_required(login_url='login')
-def search_course(request):
 
+def search_course(request):
+    user = request.user 
+    if not user.is_authenticated:
+        return redirect('login')
     context = {}
     query = request.GET.get('query')
     if query is not None:
@@ -45,9 +46,10 @@ def search_course(request):
     return render(request, 'learnAppTemplates/search.html', context)
 
 
-@login_required(login_url='login')
 def course_view(request):
-
+    user = request.user 
+    if not user.is_authenticated:
+        return redirect('login')
     context = {}
     id = request.GET.get('id')
     current_user = request.user 
@@ -64,8 +66,11 @@ def course_view(request):
     return redirect(course.link)
 
 
-@login_required(login_url='login')
+
 def categorized_courses(request):
+    user = request.user 
+    if not user.is_authenticated:
+        return redirect('login')
 
     context = {}
     if request.method == 'GET':
@@ -73,7 +78,6 @@ def categorized_courses(request):
         if id:
             id = int(id)
             category = Course_Category.objects.get(id=id)
-            print(category.name)
             categorized_courses = Course.objects.filter(category=category)
             context['courses'] = categorized_courses
             context['category_name'] = category.name

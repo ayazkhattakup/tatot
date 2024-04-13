@@ -1,14 +1,13 @@
-import json 
-
+import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout 
-
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from Src_App.models import *
 from django.core import paginator
 from django.utils import timezone
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 
 
 @login_required(login_url='admin_login')
@@ -28,7 +27,7 @@ def admin_home(request):
 
     most_favorited_videos = Video.objects.order_by('-favorites')[:10]
     context['most_favorited_videos'] = most_favorited_videos
-    
+
     most_favorited_books = Flipbook.objects.order_by('-favorites')[:10]
     context['most_favorited_books'] = most_favorited_books
 
@@ -53,16 +52,16 @@ def admin_home(request):
 
 def upload_video(request):
 
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     all_categories = VideoCategorie.objects.all()
     context['categories'] = all_categories
-
     if request.method == 'DELETE':
         pass
-
     if request.method == 'PUT':
-        pass 
-
+        pass
     if request.method == 'POST':
         title = request.POST.get('title')
         categorie = request.POST.get('category')
@@ -71,13 +70,8 @@ def upload_video(request):
         desc = request.POST.get('description')
         cover_img = request.FILES.get('cover-img')
         video_file = request.FILES.get('video-file')
-        print(video_file)
         categorie = int(categorie)
-        print(categorie)
-        print(cover_img)
-
         categorie = VideoCategorie.objects.get(id=categorie)
-
         if ad_link and not video_file:  
             new_video = Video.objects.create(
                 title = title,
@@ -109,23 +103,29 @@ def upload_video(request):
 
 
 def create_playlist(request):
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
+    try:
+        context = {}
+        if request.method == 'POST':
+            title = request.POST.get('title')
+            img = request.FILES.get('playlist-cover')
+            new_playlist = VideoCategorie.objects.create(
+                name=title,
+                img=img,
+            )
+            new_playlist.save()
+            context['message'] = 'Playlist Created Successfully'
 
-    if request.method == 'POST':
-        title = request.POST.get('title')
-        img = request.FILES.get('playlist-cover')
-
-        new_playlist = VideoCategorie.objects.create(
-            name=title,
-            img=img,
-        )
-
-        new_playlist.save()
-        return redirect('playlists')
-    return render(request, 'admin_panel_templates/playlist_create.html')
-
+        return render(request, 'admin_panel_templates/playlist_create.html', context)
+    except Exception as e:
+        return HttpResponse('An Error occured')
 
 def create_bookshelve(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     if request.method == 'POST':
         title = request.POST.get('title')
 
@@ -136,7 +136,9 @@ def create_bookshelve(request):
 
 
 def upload_book(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     all_book_categories = Categorie.objects.all()
     context['all_categories'] = all_book_categories
@@ -166,7 +168,9 @@ def upload_book(request):
 
 
 def uploaded_books(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -193,11 +197,12 @@ def uploaded_books(request):
 
 
 def uploaded_videos(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
-        # print(id)
         if id:
             id = int(id)
 
@@ -223,7 +228,9 @@ def uploaded_videos(request):
 
 
 def book(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('book-id')
@@ -272,7 +279,9 @@ def book(request):
 
 
 def video_details(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('video-id')
@@ -363,7 +372,6 @@ def playlist(request):
             id = int(id)
 
         if request.method == 'POST':
-            print('git it')
             title = request.POST.get('title')
             img = request.FILES.get('playlist-cover')
             # print(img)
@@ -510,7 +518,6 @@ def home_collection_videos(request):
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
-        print(id)
         if id:
             id = int(id)
             video = HomePageCollection.objects.get(id=id)
@@ -873,13 +880,11 @@ def add_song(request):
         song_file = request.FILES.get('song-file')
         song_link = request.POST.get('song-link')
         album_id = request.POST.get('album')
-        print(album_id)
         if album_id is not None and  title is not None and cover is not None and song_link is not None:
             album_id = int(album_id)
             album = Album.objects.get(id=album_id)
             new_song = Song.objects.create(title=title, cover=cover, music_file=song_file, album=album)
             new_song.save()
-            print(new_song.album)
             context['message'] = 'Song Added Successfully'
         elif title is not None and cover is not None and song_file is not None and song_link is None:
             album_id = int(album_id)
@@ -933,7 +938,6 @@ def song_details(request):
         id = request.GET.get('id')
         if id:
             id = int(id)
-            print(id)
             song = Song.objects.get(id=id)
             context['song'] = song
 
@@ -1004,7 +1008,6 @@ def albums(request):
                 album = Album.objects.get(id=id)
                 album.delete()            
     albums = Album.objects.all()
-    print(albums.count())
 
     pagi = Paginator(albums, 20)
     page_number = request.GET.get('page')

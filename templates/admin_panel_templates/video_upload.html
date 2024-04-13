@@ -10,6 +10,13 @@
         <h1 class="home-title mt-5">Upload a Video  </h1>
     </div>
 
+    {% if message %}
+    <div style="color:white; background-color: green; margin-top: 2rem; text-align: center; width:fit-content; padding: .5rem 1rem; display: flex; justify-self: center;" class="message-box">
+        {{message}}
+    </div>
+    {% endif %}
+    
+
     <form method="post" action="" class="row d-flex justify-content-center mt-5 align-items-center" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="col-lg-8">
