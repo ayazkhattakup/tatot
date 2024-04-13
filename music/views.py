@@ -246,7 +246,6 @@ def my_playlists(request):
         return HttpResponse("Interval Server Error")
 
 
-
 def playlist_songs(request):
     try:
         context = {}

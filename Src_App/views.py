@@ -19,8 +19,6 @@ from .VideoClubViews import *
 from django.db.models import Q
 from .models import * 
 
-
-
 def provide_layout_structure(request):
 
     context = {}
@@ -42,7 +40,6 @@ def provide_layout_structure(request):
     return JsonResponse(context, safe=False)
 
 
-@login_required(login_url='login')
 def time_limit_checker(request):
 
     profile = UserProfile.objects.get(user=request.user)
@@ -67,7 +64,6 @@ def time_limit_checker(request):
     return JsonResponse({"Message":'I have got your request for this'})
 
 
-@login_required(login_url='login')
 def time_limit_video_checker(request):
 
     profile = UserProfile.objects.get(user=request.user)
@@ -92,9 +88,11 @@ def time_limit_video_checker(request):
     return JsonResponse({"Message":'I have got your request for this'})
 
 
-@login_required(login_url='login')
+
 def Index(request):
     user = request.user
+    if not user.is_authenticated:
+            return redirect('login')
     if user and not user.is_superuser:
         profile = UserProfile.objects.get(user=user)
         
@@ -106,11 +104,12 @@ def Index(request):
 
 
 @sync_to_async
-@login_required(login_url='login')
 def BookHomeView(request):
     
     user = request.user
     profile = None
+    if not user.is_authenticated:
+            return redirect('login')
     if user and not user.is_superuser:
         profile = UserProfile.objects.get(user=user)
         
@@ -134,7 +133,6 @@ def BookHomeView(request):
 
     return render(request, 'index.html', context)
 
-@method_decorator(login_required, name='dispatch')
 class BooView(View):
 
     def post(self, request):
@@ -143,6 +141,8 @@ class BooView(View):
     def get(self, request, id):
 
         user = request.user
+        if not user.is_authenticated:
+            return redirect('login')
         if user and not user.is_superuser:
             profile = UserProfile.objects.get(user=user)
             
@@ -161,7 +161,6 @@ class BooView(View):
         return render(request, 'book.html', {'flipbook':book})
     
 
-@method_decorator(login_required, name='dispatch')
 class ReadBookView(View):
 
     def post(self, request):
@@ -172,6 +171,8 @@ class ReadBookView(View):
         book_id = None 
 
         user = request.user
+        if not user.is_authenticated:
+            return redirect('login')
         if user and not user.is_superuser:
             profile = UserProfile.objects.get(user=user)
 
@@ -191,15 +192,16 @@ class ReadBookView(View):
         return render(request, 'read-book.html', {'link':book_link,'id':book_id})
     
 
-@method_decorator(login_required, name='dispatch')
 class SearchView(View):
 
     def get(self, request):
 
+
         user = request.user
+        if not user.is_authenticated:
+            return redirect('login')
         if user and not user.is_superuser:
             profile = UserProfile.objects.get(user=user)
-            
             if profile:
                 if not profile.has_subscription:
                     return redirect('subscription-page')
@@ -250,8 +252,8 @@ class SearchView(View):
 
 def login_view(request):
 
-    message = None 
-    profile = None 
+    message = None
+    profile = None
     logged_in_count = 0
 
     if request.method == 'POST':
@@ -268,7 +270,7 @@ def login_view(request):
                     if profile:
                         logged_in_count = profile.logged_in_to
                 except Exception as e:
-                    print(e)
+                    pass
                 if not user.is_superuser:
                     if not logged_in_count >= 3:
                         if not user.is_superuser:
@@ -328,12 +330,12 @@ class RegisterView(View):
         return render(request, 'register.html')
 
 
-@login_required(login_url='login')
 def settings(request):
 
     context = {}
     user = request.user
-
+    if not user.is_authenticated:
+        return redirect('login')
     if user and not user.is_superuser:
         profile = UserProfile.objects.get(user=user)
         
@@ -439,11 +441,8 @@ def logout(request):
     return redirect('index')
 
 
-@login_required(login_url='login')
 def add_to_favourites(request):
-
-    message = None 
-
+    message = None
     try:
         if request.method == 'GET':
             id = request.GET.get('book_id')
@@ -481,11 +480,12 @@ def add_to_favourites(request):
     return JsonResponse({'message':message })
 
 
-@login_required(login_url='login')
 def favourites(request):
 
     user = request.user
 
+    if not user.is_authenticated:
+        return redirect('login')
     if user and not user.is_superuser:
         profile = UserProfile.objects.get(user=user)
         
