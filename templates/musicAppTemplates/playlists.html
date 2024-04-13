@@ -58,17 +58,31 @@
 
     let createPlaylistBtn = document.getElementById('create-playlist-btn');
 
-    createPlaylistBtn.addEventListener("click", event => {
+    createPlaylistBtn.addEventListener("click", async (event) => {
         let playlistName = document.getElementById('playlist-input-id').value;
+
+        // const csrf = '{{csrf_token}}'
+        // const response = await fetch(`{% url 'create-my-playlist' %}`, {
+        //     method: "POST",
+        //     headers: {
+        //         'Content-Type':'application/json',
+        //         'X-CSRFToken' : csrf
+        //     },
+        //     body: JSON.stringify({playlist_name:playlistName})
+        // })
+
+        // const data = await response.json();
+        // console.log(data);
         
         let xhr = new XMLHttpRequest();
 
-        xhr.open("GET", `{% url "create-my-playlist" %}?playlist-name=${playlistName}`, true);
+        xhr.open("GET", `{% url "create-my-playlist" %}?playlist_name=${playlistName}`, true);
         xhr.onload = function(){
             let data = xhr.response;
-            
+            console.log(data);
             playlistWrapper.style.display = 'none';
             showingPlaylistWrapper = false;
+
         }
 
         xhr.send();

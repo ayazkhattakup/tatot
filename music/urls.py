@@ -14,4 +14,5 @@ urlpatterns = [
     path('create-my-playlist/', views.create_playlist, name='create-my-playlist'),
     path('my-playlists/', views.my_playlists, name='my-playlists'),
     path('playlist-songs/', views.playlist_songs, name='my-playlist-songs'),
+    path('search/', views.search, name='music-search'),
 ]

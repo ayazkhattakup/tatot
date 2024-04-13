@@ -11,12 +11,14 @@ def home(request):
         user = request.user 
         user_profile = UserProfile.objects.get(user=user)
         
-        if user.is_superuser :
+        if not user.is_superuser:
             if user_profile:
                 if not user_profile.has_music_subscription:
                     return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
         else:
-            print('User is Admin')
+            pass
     except Exception as e:
         print(e)
     return render(request, 'musicAppTemplates/home.html', context)
@@ -25,6 +27,17 @@ def albums(request):
     try:
         context = {}
 
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser:
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass
         albums = Album.objects.all()
         context['albums'] = albums
 
@@ -39,7 +52,16 @@ def favorite_songs(request):
         message = None
         songs = None
         user = request.user 
-
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass
         if request.user:
             favorite_playlist = FavoritePlaylist.objects.get(user=user)
             favorite_songs = favorite_playlist.songs.all()
@@ -55,6 +77,17 @@ def favorite_songs(request):
 def album_songs(request):
     try:
         context = {}
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass
         album_id = request.GET.get('album-id')
         message = None 
         if album_id:
@@ -75,6 +108,17 @@ def album_songs(request):
 def all_songs(request):
     try:
         context = {}        
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass
         songs = Song.objects.all()
         context['songs'] = songs
         print('these are the songs', songs)
@@ -84,22 +128,39 @@ def all_songs(request):
         return render(request, 'musicAppTemplates/all_songs.html')
 
 def song(request):
-    context = {}
-    message = None
-    id = request.GET.get('song-id')
-    next_song = Song.objects.order_by('?').first()
-    playlists = Playlist.objects.filter(user=request.user)
-    context['playlists'] = playlists
-    if id:
-        id = int(id)
-        song = Song.objects.get(id=id)
-        context['song'] = song
-        context['next_song'] = next_song
-        message = 'Everything successfull'
-    else:
-        message = 'Song Id was not provided in the request'
-    context['message'] = message
-    return render(request, 'musicAppTemplates/song.html', context)
+    try:
+        context = {}
+        message = None
+
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass
+
+        id = request.GET.get('song-id')
+        next_song = Song.objects.order_by('?').first()
+        playlists = Playlist.objects.filter(user=request.user)
+        context['playlists'] = playlists
+        if id:
+            id = int(id)
+            song = Song.objects.get(id=id)
+            context['song'] = song
+            context['next_song'] = next_song
+            message = 'Everything successfull'
+        else:
+            message = 'Song Id was not provided in the request'
+        context['message'] = message
+        return render(request, 'musicAppTemplates/song.html', context)
+    except Exception as e:
+        print(e)
+        return HttpResponse('An Error occured on Server')
 
 def add_favorite_song(request):
     message = None 
@@ -107,7 +168,6 @@ def add_favorite_song(request):
     if id:
         id = int(id)
         song = Song.objects.get(id=id)
-
 
         if FavoritePlaylist.objects.filter(user=request.user).exists():
             my_favorite_playlist = FavoritePlaylist.objects.get(user=request.user)
@@ -128,33 +188,66 @@ def add_favorite_song(request):
 
 def create_playlist(request):
 
-    return JsonResponse({'value':'message'})
+    message = None
+    response_status = None
+    user = request.user
+    try:
+        if request.method == 'GET':
+            playlist_name = request.GET.get('playlist_name')
+            if playlist_name is not None:
+                print(playlist_name)
+                new_playlist = Playlist.objects.create(
+                    user = user,
+                    title = playlist_name,
+                )
+                new_playlist.save()
+                response_status = 200 
+                message = 'Playlist created successfully'
+            else:
+                message = "Playlist name was not provided"
+                response_status = 500
+            return JsonResponse({'message':message}, status=response_status)
+    except Exception as e:
+        message = "Internal server error"
+        response_status = 500
+        return JsonResponse({'message':message}, status=response_status)
 
 def add_to_playlist(request):
-    
+    response_status = None 
     if request.method == 'POST':
         print(request.body)
         request_body = json.loads(request.body)
         playlist_id = request_body.get('playlist_id')
         song_id = request_body.get('song_id')
         message = None
-        print(playlist_id)
-        print(song_id)
         if song_id is not None and playlist_id is not None:
             playlist = Playlist.objects.get(id=playlist_id)
             song = Song.objects.get(id=song_id)
             playlist.songs.add(song)
             playlist.save()
             message = "Song added to your Playlist successfull"
+            response_status = 200 
         else:
+            response_status = 500
             message = "Song Id or Playlist id was not provided"
 
-    return JsonResponse({'value':'its message'})
+    return JsonResponse({'value':message}, status=response_status)
 
 
 def my_playlists(request):
     try:
         context = {}
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass
         playlists = Playlist.objects.filter(user=request.user)
         context['playlists'] = playlists
         print("He")
@@ -163,32 +256,61 @@ def my_playlists(request):
         print(e)
         return HttpResponse("Interval Server Error")
 
-def create_playlist(request):
-    try:
-        message = None
-
-        playlist_name = request.GET.get('playlist-name')
-        print(playlist_name)
-        new_playlist = Playlist.objects.create(
-            user=request.user,
-            title=playlist_name,
-        )
-        new_playlist.save()
-        return JsonResponse({'message':message})
-    except Exception as e:
-        print(e)
-        return JsonResponse({'error':'An error occured'})
 
 
 def playlist_songs(request):
-    context = {}
+    try:
+        context = {}
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass
+        id = request.GET.get('playlist-id')
+        if id:
+            id = int(id)
+            playlist = Playlist.objects.get(id=id)
+            songs = playlist.songs.all()
+            context['songs'] = songs
+            context['playlist'] = playlist
+        return render(request, 'musicAppTemplates/playlist_songs.html', context)
+    except Exception as e:
+        print(e)
+        return HttpResponse('An occured on Server')    
 
-    id = request.GET.get('playlist-id')
-    if id:
-        id = int(id)
-        playlist = Playlist.objects.get(id=id)
-        songs = playlist.songs.all()
-        context['songs'] = songs
-        context['playlist'] = playlist
 
-    return render(request, 'musicAppTemplates/playlist_songs.html', context)
+def search(request):
+    try:
+        context = {}
+        
+        user = request.user 
+        user_profile = UserProfile.objects.get(user=user)
+        
+        if not user.is_superuser :
+            if user_profile:
+                if not user_profile.has_music_subscription:
+                    return redirect('music-subscription')
+                if not user_profile.has_subscription:
+                    return redirect('subscription-page')
+        else:
+            pass        
+
+        query = request.GET.get('query')
+        
+        if query:
+            print(query)
+            query = str(query)
+            songs = Song.objects.filter(title__icontains=query)
+            context['query'] = query
+            context['songs'] = songs
+            print(songs)
+        return render(request, 'musicAppTemplates/search.html', context)
+    except Exception as e:
+        print(e)
+        return HttpResponse('An Error occured on Server');

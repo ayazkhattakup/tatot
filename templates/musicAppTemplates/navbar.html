@@ -13,11 +13,8 @@
     </div>
 
     <div class="right-side">
-        <a href="{% url 'favourites' %}">
-            <i class="fa-solid fa-heart"></i>
-        </a>
-        <form class="search-form" method="get" action="{% url 'search-book' %}">
-            <input type="text" name="q" class="search-input">
+        <form class="search-form" method="get" action="{% url 'music-search' %}">
+            <input type="text" name="query" class="search-input">
             <button type="submit" style="display:none;" class="search-submit"></button>
         </form>
         <i class="fa-solid fa-magnifying-glass"></i>

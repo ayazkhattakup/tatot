@@ -34,7 +34,7 @@ urlpatterns = [
     path('upload-song/', views.add_song, name='upload-song'),
     path('songs/', views.songs,name='songs'),
     path('create-album/', views.create_album, name='create-album'),
-    path('albums/', views.albums, name='albums'),
+    path('albums/', views.albums, name='admin-albums'),
     path('album-details/', views.album_details, name='album-details'),
 ]
 
