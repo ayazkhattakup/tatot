@@ -19,10 +19,9 @@ def home(request):
                     return redirect('subscription-page')
         else:
             pass
+        return render(request, 'musicAppTemplates/home.html', context)
     except Exception as e:
-        print(e)
-    return render(request, 'musicAppTemplates/home.html', context)
-
+        return HttpResponse('An Error occured')
 def albums(request):
     try:
         context = {}
@@ -43,7 +42,7 @@ def albums(request):
 
         return render(request, 'musicAppTemplates/albums.html', context)
     except Exception as e:
-        print(e)
+
         return render(request, 'musicAppTemplates/albums.html')
 
 def favorite_songs(request):
@@ -65,13 +64,11 @@ def favorite_songs(request):
         if request.user:
             favorite_playlist = FavoritePlaylist.objects.get(user=user)
             favorite_songs = favorite_playlist.songs.all()
-            print(favorite_playlist)
             context['songs'] = favorite_songs
             message = "Everything was successfull"        
             context['message'] = message
         return render(request, 'musicAppTemplates/favorites.html', context)
     except Exception as e:
-        print(e)
         return render(request, 'musicAppTemplates/favorites.html')
 
 def album_songs(request):
@@ -102,7 +99,6 @@ def album_songs(request):
         context['message'] = message
         return render(request, 'musicAppTemplates/songs.html', context)
     except Exception as e:
-        print(e)
         return render(request, 'musicAppTemplates/songs.html')        
 
 def all_songs(request):
@@ -121,10 +117,8 @@ def all_songs(request):
             pass
         songs = Song.objects.all()
         context['songs'] = songs
-        print('these are the songs', songs)
         return render(request, 'musicAppTemplates/all_songs.html', context)
     except Exception as e:
-        print(e)
         return render(request, 'musicAppTemplates/all_songs.html')
 
 def song(request):
@@ -159,7 +153,6 @@ def song(request):
         context['message'] = message
         return render(request, 'musicAppTemplates/song.html', context)
     except Exception as e:
-        print(e)
         return HttpResponse('An Error occured on Server')
 
 def add_favorite_song(request):
@@ -195,7 +188,6 @@ def create_playlist(request):
         if request.method == 'GET':
             playlist_name = request.GET.get('playlist_name')
             if playlist_name is not None:
-                print(playlist_name)
                 new_playlist = Playlist.objects.create(
                     user = user,
                     title = playlist_name,
@@ -215,7 +207,6 @@ def create_playlist(request):
 def add_to_playlist(request):
     response_status = None 
     if request.method == 'POST':
-        print(request.body)
         request_body = json.loads(request.body)
         playlist_id = request_body.get('playlist_id')
         song_id = request_body.get('song_id')
@@ -250,10 +241,8 @@ def my_playlists(request):
             pass
         playlists = Playlist.objects.filter(user=request.user)
         context['playlists'] = playlists
-        print("He")
         return render(request, 'musicAppTemplates/playlists.html', context)
     except Exception as e:
-        print(e)
         return HttpResponse("Interval Server Error")
 
 
@@ -281,7 +270,6 @@ def playlist_songs(request):
             context['playlist'] = playlist
         return render(request, 'musicAppTemplates/playlist_songs.html', context)
     except Exception as e:
-        print(e)
         return HttpResponse('An occured on Server')    
 
 
@@ -304,13 +292,11 @@ def search(request):
         query = request.GET.get('query')
         
         if query:
-            print(query)
+
             query = str(query)
             songs = Song.objects.filter(title__icontains=query)
             context['query'] = query
             context['songs'] = songs
-            print(songs)
         return render(request, 'musicAppTemplates/search.html', context)
     except Exception as e:
-        print(e)
-        return HttpResponse('An Error occured on Server');
+        return HttpResponse('An Error occured on Server')
