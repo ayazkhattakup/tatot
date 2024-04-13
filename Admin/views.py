@@ -21,7 +21,7 @@ def admin_home(request):
 
     most_watched_videos = Video.objects.order_by('-views')[:10]
     context['most_watched_videos'] = most_watched_videos
-    
+
     most_read_books = Flipbook.objects.order_by('-views')[:10]
     context['most_read_books'] = most_read_books
 
@@ -51,7 +51,6 @@ def admin_home(request):
 
 
 def upload_video(request):
-
     user = request.user
     if not user.is_authenticated:
         return redirect('admin_login')
@@ -335,7 +334,9 @@ def video_details(request):
 
 
 def all_playlists(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -363,7 +364,9 @@ def all_playlists(request):
 
 
 def playlist(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     try:
         id = request.GET.get('id')
@@ -399,7 +402,9 @@ def playlist(request):
 
 
 def book_shelves(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')    
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -427,6 +432,9 @@ def book_shelves(request):
 
 def book_shelf(request):
 
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     try:    
         id = request.GET.get('id')
@@ -457,7 +465,9 @@ def book_shelf(request):
 
 
 def search(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     queryset = None
     origin = None 
@@ -489,6 +499,9 @@ def search(request):
 
 def reports(request):
 
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     reports = Report.objects.all()
     pagi = Paginator(reports, 20)
@@ -500,7 +513,9 @@ def reports(request):
 
 
 def report_(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     id = request.GET.get('id')    
     if id:
@@ -514,7 +529,9 @@ def report_(request):
 
 
 def home_collection_videos(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -542,7 +559,9 @@ def home_collection_videos(request):
 
 
 def home_collection_video_upload(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -564,7 +583,9 @@ def home_collection_video_upload(request):
 
 
 def homepage_video_details(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('video-id')
@@ -604,7 +625,9 @@ def homepage_video_details(request):
 
 
 def design_layout(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     layouts = Layout.objects.all()
     layout = None 
@@ -664,7 +687,9 @@ def design_layout(request):
 
 
 def courses(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -693,7 +718,9 @@ def courses(request):
 
 
 def upload_course(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     all_course_categories = Course_Category.objects.all()
     context['all_categories'] = all_course_categories
@@ -721,7 +748,9 @@ def upload_course(request):
 
 
 def course_details(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('course-id')
@@ -768,7 +797,9 @@ def course_details(request):
 
 
 def course_category_details(request):    
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('course-id')
@@ -804,7 +835,9 @@ def course_category_details(request):
 
 
 def course_categories(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -828,7 +861,9 @@ def course_categories(request):
 
 
 def add_course_category(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -846,7 +881,9 @@ def add_course_category(request):
 
 
 def songs(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -870,7 +907,9 @@ def songs(request):
     return render(request, 'admin_panel_templates/songs.html', context)
 
 def add_song(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     albums = Album.objects.all()
     context['albums'] = albums
@@ -898,7 +937,9 @@ def add_song(request):
     return render(request, 'admin_panel_templates/add_song.html', context)
 
 def song_details(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('song-id')
@@ -945,7 +986,9 @@ def song_details(request):
 
 
 def album_details(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     try:
         id = request.GET.get('id')
@@ -977,7 +1020,9 @@ def album_details(request):
     return render(request, 'admin_panel_templates/album.html', context)
 
 def create_album(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -993,7 +1038,9 @@ def create_album(request):
     return render(request, 'admin_panel_templates/create_album.html', context)
 
 def albums(request):
-
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('admin_login')
     context = {}
     if request.method == 'POST':
         id = request.POST.get('id')
