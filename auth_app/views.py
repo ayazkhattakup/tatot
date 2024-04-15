@@ -55,6 +55,7 @@ def set_password(request):
 @csrf_exempt
 def thrive_cart_webhook(request):
     message = None
+    print('here I am')
     if request.method == 'POST' or request.method == 'HEAD':
         try:
             payload = json.loads(request.body)
