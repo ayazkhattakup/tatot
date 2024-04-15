@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-1vbtu(q1r@r^&(po6u)i=n_v#&gx-dwcnatyz5qwnrbfi+6@at
 
 DEBUG = True
 
-ALLOWED_HOSTS = [ '087d-2401-ba80-a384-4daf-fcf8-5-bad5-9436.ngrok-free.app', 'www.154.56.46.55', '154.56.46.55', 'member.tatertotkidsclub.app' , 'localhost' , 'www.tatertotkidsclub.app', 'books.tatertotkidsclub.app', 'tv.tatertotkidsclub.app', 'learn.tatertotkidsclub.app', 'tatertotkidsclub.app','member.201f-2401-ba80-a122-5312-8de0-93f0-bad7-ca8a.ngrok-free.app', '3.139.235.61']
+ALLOWED_HOSTS = [ '0e1e-2401-ba80-aa0e-be74-79ac-4b68-d3d4-1779.ngrok-free.app', 'www.154.56.46.55', '154.56.46.55', 'member.tatertotkidsclub.app' , 'localhost' , 'www.tatertotkidsclub.app', 'books.tatertotkidsclub.app', 'tv.tatertotkidsclub.app', 'learn.tatertotkidsclub.app', 'tatertotkidsclub.app','member.201f-2401-ba80-a122-5312-8de0-93f0-bad7-ca8a.ngrok-free.app', '3.139.235.61']
 
 
 
@@ -44,7 +44,7 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
-CSRF_TRUSTED_ORIGINS = ['https://thrivecart.com/',  "https://087d-2401-ba80-a384-4daf-fcf8-5-bad5-9436.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ['https://thrivecart.com/',  "https://0e1e-2401-ba80-aa0e-be74-79ac-4b68-d3d4-1779.ngrok-free.app"]
 
 
 MIDDLEWARE = [
@@ -90,23 +90,23 @@ WSGI_APPLICATION = 'Book_Shelves.wsgi.application'
 
 # this is for sqlite3 database 
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-# }
-
 DATABASES = {
-     'default': {
-         'ENGINE': config('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
-         'NAME': config('DATABASE_NAME', default=''),
-         'USER': config('DATABASE_USER', default=''),
-         'PASSWORD': config('DATABASE_PASSWORD', default=''),
-         'HOST': config('DATABASE_HOST', default=''),
-         'PORT': config('DATABASE_PORT', default=''),
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': BASE_DIR / 'db.sqlite3',
+   }
 }
+
+# DATABASES = {
+#      'default': {
+#          'ENGINE': config('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
+#          'NAME': config('DATABASE_NAME', default=''),
+#          'USER': config('DATABASE_USER', default=''),
+#          'PASSWORD': config('DATABASE_PASSWORD', default=''),
+#          'HOST': config('DATABASE_HOST', default=''),
+#          'PORT': config('DATABASE_PORT', default=''),
+#     }
+# }
 
 
 AUTH_PASSWORD_VALIDATORS = [

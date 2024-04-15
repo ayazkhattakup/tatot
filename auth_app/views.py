@@ -22,40 +22,10 @@ def set_password(request):
     return redirect('settings')
 
 
-# @api_view(['GET','POST'])
-# @csrf_exempt
-# def thrive_cart_webhook(request):
-
-#     if request.method == 'POST':
-#         print("There is something happening to me.")
-#         try:
-#             payload = json.loads(request.body)
-
-#             if payload['event'] == 'order.success':
-#                 customer_email = payload.get('customer').get('email')
-
-#                 user = User.objects.get(email=customer_email)
-#                 # print(user)
-#                 if user:
-#                     user_profile = UserProfile.objects.get(user=user)
-#                     # print(user_profile)
-#                     if user_profile:
-#                         user_profile.has_subscription = True 
-#                         user_profile.subscribed_on = datetime.now()
-#                         user_profile.save()
-
-#                         # print('Everything Okay.')
-#         except json.JSONDecodeError as e:
-#             print(f"Error decoding JSON: {e}")
-#             return Response({'mes':e}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-#     return Response({"mes": "Got it"}, status=status.HTTP_200_OK)
-
 
 @csrf_exempt
 def thrive_cart_webhook(request):
     message = None
-    print('here I am')
     if request.method == 'POST' or request.method == 'HEAD':
         try:
             payload = json.loads(request.body)
@@ -66,9 +36,9 @@ def thrive_cart_webhook(request):
                 if user:
                     user_profile = UserProfile.objects.get(user=user)
                     if base_product_name == 'TaterTot Kids Club Membership':
-                        if user_profile:
+                        if user_profile is not None:
                             user_profile.has_subscription = True 
-                            user_profile.subscribed_on = datetime.now()
+                            user_profile.subscribed_on = datetime.datetime.now()
                             user_profile.save()
                             return JsonResponse({"mes": "Successfully Got it"}, status=200)
                     elif base_product_name == 'Music App Subscription':
@@ -78,6 +48,7 @@ def thrive_cart_webhook(request):
                             user_profile.save() 
                             return JsonResponse({"mes": "Successfully Got it"}, status=200)
         except Exception as e: 
+            print(e)
             message = "An error occured"
     return JsonResponse({"mes": message }, status=200)
 
