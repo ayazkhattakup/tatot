@@ -77,8 +77,10 @@
 
     <script id="handle-loading-screen">
         let loadingScreenWrapper = document.querySelector('.loading-screen-wrapper');
+        console.log('Hey');
         window.addEventListener('load', event => {
             loadingScreenWrapper.style.display = 'none';
+            console.log('Hid it');
         })
     </script>
 
