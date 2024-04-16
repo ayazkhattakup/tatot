@@ -57,7 +57,20 @@
         </div>
     </div>
 
-
+    <div class="loading-screen-wrapper">
+        <div class="center">
+            <div class="circle"></div>
+        </div>
+    </div>
+    
+    <script id="handle-loading-screen">
+        let loadingScreenWrapper = document.querySelector('.loading-screen-wrapper');
+        console.log('Hey');
+        window.addEventListener('load', event => {
+            loadingScreenWrapper.style.display = 'none';
+            console.log('Hid it');
+        })
+    </script>
 
     <script id="for-other-links">
         let links = document.querySelector('.links');

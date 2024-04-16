@@ -173,6 +173,19 @@
     </div>
 </div>
 
+<div class="loading-screen-wrapper">
+    <div class="center">
+        <div class="circle"></div>
+    </div>
+</div>
+
+<script id="handle-loading-screen">
+    let loadingScreenWrapper = document.querySelector('.loading-screen-wrapper');
+    window.addEventListener('load', event => {
+        loadingScreenWrapper.style.display = 'none';
+    })
+</script>
+
 
 {% include 'footer.html' %}
 
